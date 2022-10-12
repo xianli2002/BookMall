@@ -56,7 +56,7 @@ ROOT_URLCONF = 'BookMall.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR/'书城项目页面'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -87,7 +87,7 @@ DATABASES = {
         'NAME': 'bookmall',
         'USER': 'root',
         'PASSWORD': 'lixian020506',
-        'HOST': '192.168.75.125',
+        'HOST': '192.168.199.125',
         'PORT': '3306',
     }
 }
