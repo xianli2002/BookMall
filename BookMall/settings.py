@@ -165,3 +165,5 @@ CORS_ALLOW_HEADERS = (
     'Pragma',
     'Access-Control-Allow-Origin',
 )
+
+AUTH_USER_MODEL = 'Users.User'
