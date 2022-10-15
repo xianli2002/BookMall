@@ -166,4 +166,11 @@ CORS_ALLOW_HEADERS = (
     'Access-Control-Allow-Origin',
 )
 
+CORS_ORIGIN_WHITELIST = (
+    'http://127.0.0.1:8080',
+    'http://localhost:8080',
+    'http://haiheihai.com:8080',
+    'http://haiheihai.com:8000',
+)
+
 AUTH_USER_MODEL = 'Users.User'
