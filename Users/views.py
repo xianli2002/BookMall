@@ -84,8 +84,6 @@ class InfoView(LoginRequiredJSONMixin,View):
         info_data={
             'username':request.user.username,
             'mobile':request.user.phonenumber,
-            'isseller':request.user.isseller,
-            'area':request.user.area,
         }
         return JsonResponse({'code':0,'errmsg':'ok','info_data':info_data})
 
