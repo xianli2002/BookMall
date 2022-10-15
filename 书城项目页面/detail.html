@@ -3,12 +3,12 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 	<title>香辛商城-商品详情</title>
-	<link rel="stylesheet" type="text/css" href="../../static/css/reset.css">
-	<link rel="stylesheet" type="text/css" href="../../static/css/main.css">
-	<script type="text/javascript" src="../../static/js/host.js"></script>
-	<script type="text/javascript" src="../../static/js/vue-2.5.16.js"></script>
-	<script type="text/javascript" src="../../static/js/jquery-1.12.4.min.js"></script>
-	<script type="text/javascript" src="../../static/js/axios-0.18.0.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/reset.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+	<script type="text/javascript" src="js/host.js"></script>
+	<script type="text/javascript" src="js/vue-2.5.16.js"></script>
+	<script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>
+	<script type="text/javascript" src="js/axios-0.18.0.min.js"></script>
 	<script>
 		$(function(){
 			var $tab_btn = $('.detail_tab li');
@@ -22,7 +22,7 @@
 </head>
 <body>
 <div id="app" v-cloak>
-	{% verbatim %}
+
 	<div class="header_con">
 		<div class="header">
 			<div class="welcome fl">欢迎来到香辛商城!</div>
@@ -48,7 +48,7 @@
             </div>
 		</div>		
 	</div>
-	{% endverbatim %}
+
 	<div class="search_bar clearfix">
 		<a href="http://xiangxin.mall:8000/index.html" class="logo fl"><img src="/static/images/logo02.png"></a>
 		<div class="search_wrap fl">
@@ -64,7 +64,7 @@
 			</ul>
 		</div>
 
-		{% verbatim %}
+
 		<div class="guest_cart fr">
             <a href="/cart.html" class="cart_name fl">我的购物车</a>
             <div class="goods_count fl" id="show_count">[[ cart_total_count ]]</div>
@@ -76,7 +76,7 @@
                 </li>
             </ul>
 		</div>
-        {% endverbatim %}
+  
 
 	</div>
 
@@ -158,9 +158,7 @@
 			{% endfor %}
 		</div>
 		{% endfor %}
-		{% verbatim %}
 		<div class="total">总价：<em>[[sku_amount]]元</em></div>
-		{% endverbatim %}
 		<div class="operate_btn">
 			<a @click="add_cart" class="add_cart" id="add_cart">加入购物车</a>
 		</div>
@@ -228,8 +226,8 @@
         var price = {{sku.price}};
         var cat = {{ sku.category.id }};
     </script>
-    <script type="text/javascript" src="http://xiangxin.mall:8000/static/js/common.js"></script>
-    <script type="text/javascript" src="http://xiangxin.mall:8000/static/js/detail.js"></script>
+    <script type="text/javascript" src="js/common.js"></script>
+    <script type="text/javascript" src="js/detail.js"></script>
 
 </body>
 </html>
