@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-mphe5=y=wnn&qq&-c!yuc^^w5&_)zi_x@)iz*bn=a109pr+v#&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1',]
+ALLOWED_HOSTS = ['127.0.0.1','bookmall.com']
 
 # Application definition
 
@@ -169,8 +169,8 @@ CORS_ALLOW_HEADERS = (
 CORS_ORIGIN_WHITELIST = (
     'http://127.0.0.1:8080',
     'http://localhost:8080',
-    'http://haiheihai.com:8080',
-    'http://haiheihai.com:8000',
+    'http://test.com:8080',
+    'http://test.com:8000',
 )
 
 CACHES = {
