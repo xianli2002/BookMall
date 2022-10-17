@@ -147,7 +147,9 @@ class passwordChangeAPI(APIView):
 
         user.set_password(new_password)
         user.save()
-        return Response({'code':0,'errmsg':'ok'}).delete_cookie('username')
+        response = Response({'code':0,'errmsg':'ok'})
+        response.delete_cookie('username')
+        return response
 
 
 # class UserHistoryView(LoginRequiredJSONMixin,APIView):
