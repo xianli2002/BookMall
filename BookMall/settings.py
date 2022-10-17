@@ -169,8 +169,8 @@ CORS_ALLOW_HEADERS = (
 CORS_ORIGIN_WHITELIST = (
     'http://127.0.0.1:8080',
     'http://localhost:8080',
-    'http://test.com:8080',
-    'http://test.com:8000',
+    'http://bookmall.com:8080',
+    'http://bookmall.com:8000',
 )
 
 CACHES = {
