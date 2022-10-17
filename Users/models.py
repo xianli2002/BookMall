@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from rest_framework.serializers import ModelSerializer
 
 # 用户类
 class User(AbstractUser):
@@ -9,3 +10,8 @@ class User(AbstractUser):
         db_table = 'Users'
         verbose_name = '用户'
         verbose_name_plural =verbose_name
+
+class UserModelSerializer(ModelSerializer):
+    class Meta:
+        model=User
+        fields='__all__'
