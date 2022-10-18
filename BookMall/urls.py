@@ -21,5 +21,6 @@ register_converter(UsernameConverter,'username')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',include('Users.url'))
+    path('',include('Users.urls')),
+    path('',include('Areas.urls')),
 ]

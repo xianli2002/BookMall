@@ -45,7 +45,6 @@ class Address(models.Model):
         ordering = ['user']
 
 class AddressModelSerializer(ModelSerializer):
-
     class Meta:
         model=Address
         fields='__all__'
