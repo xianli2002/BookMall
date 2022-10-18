@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'Users',
     'Areas',
+    'Books',
     'corsheaders',
     'rest_framework'
 ]
