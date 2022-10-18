@@ -128,7 +128,6 @@ class centerViewAPI(LoginRequiredJSONMixin,APIView):
         info=UserModelSerializer(instance=user)
         info_data = info.data
         info_data['mobile'] = info_data['phonenumber']
-        print(info_data)
         return Response({'code':0,'errmsg':'ok','info_data':info_data,'address':addstr})
 
 
