@@ -120,8 +120,8 @@ content_category:{
     ]
 } 
 -->
-            <ul v-for="(chanel,index) in content_category.chanels" class="sub_menu">
-                    <li>
+            <ul class="sub_menu">
+                    <li v-for="(chanel,index) in content_category.chanels">
                         <div class="level1">
                                 <a href="{{ chanel.url }}">{{chanel.name}}</a>
                         </div>
