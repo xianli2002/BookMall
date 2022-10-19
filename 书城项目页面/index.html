@@ -254,33 +254,35 @@ goods_on_index:{
 
                 </div>
                 <div class="key_words" >
-                    <ul v-for:"(content,index) in goods_on_index.1F.0">
+                    <ul>
+                        <li v-for:"(content,index) in goods_on_index.1F.0">
                         <a href="content.url">{{ content.title }}</a>
+                        </li>
                     </ul>    
                 </div>
             </div>
             <div class="goods_list_con">
-                <ul v-show="f1_tab===1" class="goods_list fl" v-for:"(content,index) in goods_on_index.1F.1">
+                <ul v-show="f1_tab===1" class="goods_list fl" >
  
-                        <li>
+                        <li v-for:"(content,index) in goods_on_index.1F.1">
                             <a href="{{ content.url }}" class="goods_pic"><img src="{{ content.image_url }}"></a>
                             <h4><a href="{{ content.url }}" title="{{ content.title }}">{{ content.title }}</a></h4>
                             <div class="price">{{ content.text }}</div>
                         </li>
 
                 </ul>
-                <ul v-show="f1_tab===2" class="goods_list fl" v-for:"(content,index) in goods_on_index.1F.2">
+                <ul v-show="f1_tab===2" class="goods_list fl" >
      
-                        <li>
+                        <li v-for:"(content,index) in goods_on_index.1F.2">
                             <a href="{{ content.url }}" class="goods_pic"><img src="{{ content.image.url }}"></a>
                             <h4><a href="{{ content.url }}" title="{{ content.title }}">{{ content.title }}</a></h4>
                             <div class="price">{{ content.text }}</div>
                         </li>
 
                 </ul>
-                <ul v-show="f1_tab===3" class="goods_list fl" v-for:"(content,index) in goods_on_index.1F.3">
+                <ul v-show="f1_tab===3" class="goods_list fl" >
 
-                        <li>
+                        <li v-for:"(content,index) in goods_on_index.1F.3">
                             <a href="{{ content.url }}" class="goods_pic"><img src="{{ content.image.url }}"></a>
                             <h4><a href="{{ content.url }}" title="{{ content.title }}">{{ content.title }}</a></h4>
                             <div class="price">{{ content.text }}</div>
@@ -309,24 +311,26 @@ goods_on_index:{
 
                 </div>
                 <div class="key_words" >
-                    <ul v-for:"(content,index) in goods_on_index.2F.0">
+                    <ul>
+                        <li v-for:"(content,index) in goods_on_index.2F.0">
                         <a href="content.url">{{ content.title }}</a>
+                        </li>
                     </ul>    
                 </div>
             </div>
             <div class="goods_list_con">
-                <ul v-show="f2_tab===1" class="goods_list fl" v-for:"(content,index) in goods_on_index.2F.1">
+                <ul v-show="f2_tab===1" class="goods_list fl">
        
-                        <li>
+                        <li v-for:"(content,index) in goods_on_index.2F.1">
                             <a href="{{ content.url }}" class="goods_pic"><img src="{{ content.image.url }}"></a>
                             <h4><a href="{{ content.url }}" title="{{ content.title }}">{{ content.title }}</a></h4>
                             <div class="price">{{ content.text }}</div>
                         </li>
 
                 </ul>
-                <ul v-show="f2_tab===2" class="goods_list fl" v-for:"(content,index) in goods_on_index.2F.2">
+                <ul v-show="f2_tab===2" class="goods_list fl">
              
-                        <li>
+                        <li v-for:"(content,index) in goods_on_index.2F.2">
                             <a href="{{ content.url }}" class="goods_pic"><img src="{{ content.image.url }}"></a>
                             <h4><a href="{{ content.url }}" title="{{ content.title }}">{{ content.title }}</a></h4>
                             <div class="price">{{ content.text }}</div>
@@ -356,47 +360,31 @@ goods_on_index:{
 
                 </div>
                 <div class="key_words" >
-                    <ul v-for:"(content,index) in goods_on_index.3F.0">
+                    <ul>
+                        <li v-for:"(content,index) in goods_on_index.3F.0">
                         <a href="content.url">{{ content.title }}</a>
+                    </li>
                     </ul>    
                 </div>
             </div>
             <div class="goods_list_con">
-                <ul v-show="f3_tab===1" class="goods_list fl" v-for:"(content,index) in goods_on_index.3F.1">
+                <ul v-show="f3_tab===1" class="goods_list fl">
       
-                        <li>
+                        <li  v-for:"(content,index) in goods_on_index.3F.1">
                             <a href="{{ content.url }}" class="goods_pic"><img src="{{ content.image.url }}"></a>
                             <h4><a href="{{ content.url }}" title="{{ content.title }}">{{ content.title }}</a></h4>
                             <div class="price">{{ content.text }}</div>
                         </li>
                   
                 </ul>
-                <ul v-show="f3_tab===2" class="goods_list fl" v-for:"(content,index) in goods_on_index.3F.2">
+                <ul v-show="f3_tab===2" class="goods_list fl" >
                     
-                        <li>
+                        <li v-for:"(content,index) in goods_on_index.3F.2">
                             <a href="{{ content.url }}" class="goods_pic"><img src="{{ content.image.url }}"></a>
                             <h4><a href="{{ content.url }}" title="{{ content.title }}">{{ content.title }}</a></h4>
                             <div class="price">{{ content.text }}</div>
                         </li>
      
-                </ul>
-                <ul v-show="f3_tab===3" class="goods_list fl" v-for:"(content,index) in goods_on_index.3F.3">
-                    
-                    <li>
-                        <a href="{{ content.url }}" class="goods_pic"><img src="{{ content.image.url }}"></a>
-                        <h4><a href="{{ content.url }}" title="{{ content.title }}">{{ content.title }}</a></h4>
-                        <div class="price">{{ content.text }}</div>
-                    </li>
- 
-                </ul>
-                <ul v-show="f3_tab===4" class="goods_list fl" v-for:"(content,index) in goods_on_index.3F.4">
-                    
-                    <li>
-                        <a href="{{ content.url }}" class="goods_pic"><img src="{{ content.image.url }}"></a>
-                        <h4><a href="{{ content.url }}" title="{{ content.title }}">{{ content.title }}</a></h4>
-                        <div class="price">{{ content.text }}</div>
-                    </li>
- 
                 </ul>
             </div>
         </div>
