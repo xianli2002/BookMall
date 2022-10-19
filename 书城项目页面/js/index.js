@@ -37,7 +37,7 @@ var vm = new Vue({
                 })
         },
         get_goods_on_index_data:function(){
-            var url = this.host + '/good_on_index/';
+            var url = this.host + '/goods_on_index/';
             axios.get(url, {
                 responseType: 'json',
                 withCredentials:true,
