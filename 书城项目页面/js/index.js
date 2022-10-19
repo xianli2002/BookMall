@@ -1,6 +1,5 @@
 var vm = new Vue({
     el: '#app',
-    delimiters: ['[[', ']]'], // 修改vue模板符号，防止与django冲突
     data: {
         host,
         f1_tab: 1, // 1F 标签页控制

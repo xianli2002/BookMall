@@ -45,21 +45,21 @@
                 <input type="submit" class="input_btn fr" name="" value="搜索">
             </form>
 			<ul class="search_suggest fl">
-				<li><a href="#">索尼微单</a></li>
-				<li><a href="#">优惠15元</a></li>
-				<li><a href="#">美妆个护</a></li>
-				<li><a href="#">买2免1</a></li>
+				<li><a href="#">巴黎圣母院</a></li>
+				<li><a href="#">西游记</a></li>
+				<li><a href="#">高等数学</a></li>
+				<li><a href="#">学霸笔记</a></li>
 			</ul>
 		</div>	
 	
 		<div class="guest_cart fr">
-            <a href="cart.html" class="cart_name fl">我的购物车回车</a>
-            <div class="goods_count fl" id="show_count">[[ cart_total_count ]]</div>
+            <a href="cart.html" class="cart_name fl">我的购物车</a>
+            <div class="goods_count fl" id="show_count">{{ cart_total_count }}</div>
             <ul class="cart_goods_show">
                 <li v-for="cart in carts">
                     <img :src="cart.default_image_url" alt="商品图片">
-                    <h4>[[ cart.name ]]</h4>
-                    <div>[[ cart.count ]]</div>
+                    <h4>{{ cart.name }}</h4>
+                    <div>{{ cart.count }}</div>
                 </li>
             </ul>
 		</div>
@@ -81,9 +81,12 @@
 
 	<div class="pos_center_con clearfix">
 
-		<ul class="slide" v-for="(lbt,index) in content_category.contents">
+		<ul class="slide" >
 
-            <li><a href="{{ lbt.url }}"><img src="{{ lbt.image.url }}" alt="{{ lbt.title }}"></a></li>
+            <li><a href="#"><img src="images/slide01.png" alt="嫌疑人X的献身热销中"></a></li>
+            <li><a href="#"><img src="images/slide02.png" alt="阅读让生活更精彩"></a></li>
+            <li><a href="#"><img src="images/slide03.png" alt="冰与火之歌"></a></li>
+            <li><a href="#"><img src="images/slide04.png" alt="活动"></a></li>
 
 		</ul>
 		<div class="prev"></div>
@@ -128,7 +131,7 @@ content_category:{
 
                                 <div class="group_name fl">{{ cat2.name }}&gt;</div>
                                 <div class="group_detail fl">
-                                     <a href="/list.html?cat={{ cat2.id }}">{{ cat2.name }}</a>
+                                     <a href="list.html?cat={{ cat2.id }}">{{ cat2.name }}</a>
                                 </div>
 
                             </div>
@@ -244,7 +247,7 @@ goods_on_index:{
         <div class="goods_con clearfix">
             <div class="goods_banner fl">
 
-                <img src="images/1F_post.png">
+                <img src="images/banner01.png">
                 <div class="channel">
                     
                         <a href="#">热销好书</a>
@@ -299,7 +302,7 @@ goods_on_index:{
         <div class="goods_con clearfix">
             <div class="goods_banner fl">
 
-                <img src="images/2F_post.png">
+                <img src="images/banner02.png">
                 <div class="channel">
                     
                         <a href="#">古今名著</a>
@@ -338,16 +341,15 @@ goods_on_index:{
         <div class="list_title clearfix">
             <h3 class="fl" id="model01">3F 教育教材</h3>
             <div class="subtitle fr">
-                <a @mouseenter="f3_tab=1" :class="f3_tab===1?'active':''">小学</a>
-                <a @mouseenter="f3_tab=2" :class="f3_tab===2?'active':''">初中</a>
-                <a @mouseenter="f3_tab=3" :class="f3_tab===3?'active':''">高中</a>
-                <a @mouseenter="f3_tab=4" :class="f3_tab===4?'active':''">大学</a>
+                <a @mouseenter="f3_tab=1" :class="f3_tab===1?'active':''">中小学教材</a>
+                <a @mouseenter="f3_tab=2" :class="f3_tab===2?'active':''">大中专教材</a>
+
             </div>
         </div>
         <div class="goods_con clearfix">
             <div class="goods_banner fl">
 
-                <img src="images/3F_post.png">
+                <img src="images/banner03.png">
                 <div class="channel">
                     
                         <a href="#">教育教材</a>
