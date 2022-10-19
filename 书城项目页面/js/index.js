@@ -19,7 +19,7 @@ var vm = new Vue({
          // 获取cookie中的用户名
     	this.username = getCookie('username');
         this.get_category_data();
-        this.get_goods_on_index_data;
+        this.get_goods_on_index_data();
 
     },
     methods: {
