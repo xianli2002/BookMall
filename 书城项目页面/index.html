@@ -40,15 +40,15 @@
 	<div class="search_bar clearfix">
 		<a href="index.html" class="logo fl"><img src="images/logo02.png"></a>
 		<div class="search_wrap fl">
-			<form method="get" action="search.html" class="search_con">
+			<form method="get" action="/search.html" class="search_con">
                 <input type="text" class="input_text fl" name="q" placeholder="搜索商品">
                 <input type="submit" class="input_btn fr" name="" value="搜索">
             </form>
 			<ul class="search_suggest fl">
-				<li><a href="#">儿童书籍</a></li>
-				<li><a href="#">中西小说</a></li>
-				<li><a href="#">教材</a></li>
-				<li><a href="#">影视音像</a></li>
+				<li><a href="#">索尼微单</a></li>
+				<li><a href="#">优惠15元</a></li>
+				<li><a href="#">美妆个护</a></li>
+				<li><a href="#">买2免1</a></li>
 			</ul>
 		</div>	
 	
@@ -71,18 +71,19 @@
 			<h1 class="fl">书籍分类</h1>
 			<ul class="navlist fl">
 				<li><a href="">首页</a></li>
+				<li class="interval">|</li>
+				<li><a href="">真划算</a></li>
+				<li class="interval">|</li>
+				<li><a href="">抽奖</a></li>
 			</ul>
 		</div>
 	</div>
 
 	<div class="pos_center_con clearfix">
 
-		<ul class="slide">
+		<ul class="slide" v-for="(lbt,index) in content_category.contents">
 
-            <li><a href="#"><img src="images/slide01.png" alt="嫌疑人X的献身热销中"></a></li>
-            <li><a href="#"><img src="images/slide02.png" alt="阅读让生活更精彩"></a></li>
-            <li><a href="#"><img src="images/slide03.png" alt="冰与火之歌"></a></li>
-            <li><a href="#"><img src="images/slide04.png" alt="活动"></a></li>
+            <li><a href="{{ lbt.url }}"><img src="{{ lbt.image.url }}" alt="{{ lbt.title }}"></a></li>
 
 		</ul>
 		<div class="prev"></div>
@@ -107,7 +108,13 @@ content_category:{
             ]
         },......
     ]
-   
+    contents:[
+        {
+            title:"",
+            url:"",
+            image:""
+        },......
+    ]
 } 
 -->
             <ul v-for="(chanel,index) in content_category.chanels" class="sub_menu">
@@ -237,7 +244,7 @@ goods_on_index:{
         <div class="goods_con clearfix">
             <div class="goods_banner fl">
 
-                <img src="images/banner01.png">
+                <img src="images/1F_post.png">
                 <div class="channel">
                     
                         <a href="#">热销好书</a>
@@ -292,7 +299,7 @@ goods_on_index:{
         <div class="goods_con clearfix">
             <div class="goods_banner fl">
 
-                <img src="images/banner02.png">
+                <img src="images/2F_post.png">
                 <div class="channel">
                     
                         <a href="#">古今名著</a>
@@ -331,15 +338,16 @@ goods_on_index:{
         <div class="list_title clearfix">
             <h3 class="fl" id="model01">3F 教育教材</h3>
             <div class="subtitle fr">
-                <a @mouseenter="f3_tab=1" :class="f3_tab===1?'active':''">中小学教材</a>
-                <a @mouseenter="f3_tab=2" :class="f3_tab===2?'active':''">大中专教材</a>
-
+                <a @mouseenter="f3_tab=1" :class="f3_tab===1?'active':''">小学</a>
+                <a @mouseenter="f3_tab=2" :class="f3_tab===2?'active':''">初中</a>
+                <a @mouseenter="f3_tab=3" :class="f3_tab===3?'active':''">高中</a>
+                <a @mouseenter="f3_tab=4" :class="f3_tab===4?'active':''">大学</a>
             </div>
         </div>
         <div class="goods_con clearfix">
             <div class="goods_banner fl">
 
-                <img src="images/banner03.png">
+                <img src="images/3F_post.png">
                 <div class="channel">
                     
                         <a href="#">教育教材</a>
@@ -370,7 +378,24 @@ goods_on_index:{
                         </li>
      
                 </ul>
-                
+                <ul v-show="f3_tab===3" class="goods_list fl" v-for:"(content,index) in goods_on_index.3F.3">
+                    
+                    <li>
+                        <a href="{{ content.url }}" class="goods_pic"><img src="{{ content.image.url }}"></a>
+                        <h4><a href="{{ content.url }}" title="{{ content.title }}">{{ content.title }}</a></h4>
+                        <div class="price">{{ content.text }}</div>
+                    </li>
+ 
+                </ul>
+                <ul v-show="f3_tab===4" class="goods_list fl" v-for:"(content,index) in goods_on_index.3F.4">
+                    
+                    <li>
+                        <a href="{{ content.url }}" class="goods_pic"><img src="{{ content.image.url }}"></a>
+                        <h4><a href="{{ content.url }}" title="{{ content.title }}">{{ content.title }}</a></h4>
+                        <div class="price">{{ content.text }}</div>
+                    </li>
+ 
+                </ul>
             </div>
         </div>
     </div>

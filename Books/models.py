@@ -25,6 +25,9 @@ class SKU(models.Model):
     image1 = models.ImageField(verbose_name='图片1')
     image2 = models.ImageField(verbose_name='图片2')
     image3 = models.ImageField(verbose_name='图片3')
+    sales = models.IntegerField(verbose_name='销量',default=0)
+    stock = models.IntegerField(verbose_name='库存',default=0)
+
     class Meta:
         db_table = 'books'
         verbose_name = '书籍信息'
