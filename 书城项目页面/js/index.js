@@ -9,7 +9,8 @@ var vm = new Vue({
         cart_total_count: 0, // 购物车总数量
         carts: [], // 购物车数据,
         username:'',
-        content_category:[]
+        content_category:{},
+        goods_on_index:{},
     },
     mounted(){
         // 获取购物车数据
@@ -17,6 +18,8 @@ var vm = new Vue({
 
          // 获取cookie中的用户名
     	this.username = getCookie('username');
+        this.get_category_data();
+        this.get_goods_on_index_data;
 
     },
     methods: {
@@ -24,9 +27,23 @@ var vm = new Vue({
             var url = this.host + '/content_category/';
             axios.get(url, {
                 responseType: 'json',
+                withCredentials:true,
             })
                 .then(response => {
-                    this.content_category = response.data.content_category
+                    this.content_category = response.data.content_category;
+                })
+                .catch(error => {
+                    console.log(error.response);
+                })
+        },
+        get_goods_on_index_data:function(){
+            var url = this.host + '/good_on_index/';
+            axios.get(url, {
+                responseType: 'json',
+                withCredentials:true,
+            })
+                .then(response => {
+                    this.goods_on_index = response.data.goods_on_index;
                 })
                 .catch(error => {
                     console.log(error.response);
