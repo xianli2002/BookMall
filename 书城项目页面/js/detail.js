@@ -49,7 +49,7 @@ var vm = new Vue({
             .catch(error=>{
                 console.log(error)
             })
-
+        this.get_category_data();    
         this.get_cart();
         this.get_hot_goods();
         this.get_comments();
@@ -57,6 +57,19 @@ var vm = new Vue({
     },
     methods: {
          // 退出登录按钮
+         get_category_data:function(){
+            var url = this.host + '/content_category/';
+            axios.get(url, {
+                responseType: 'json',
+                withCredentials:true,
+            })
+                .then(response => {
+                    this.content_category = response.data.content_category;
+                })
+                .catch(error => {
+                    console.log(error.response);
+                })
+        },
         logoutfunc: function () {
             var url = this.host + '/logout/';
             axios.delete(url, {

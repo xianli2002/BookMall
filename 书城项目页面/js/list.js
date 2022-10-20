@@ -14,7 +14,6 @@ var vm = new Vue({
         skus: [], // 数据
         cat1: {url: '',name:''},  // 一级类别
         cat2: {name:''},  // 二级类别
-        cat3: {name:''},  // 三级类别,
         cart_total_count: 0, // 购物车总数量
         carts: [], // 购物车数据
         hot_skus:[] // 热销商品,
@@ -78,6 +77,7 @@ var vm = new Vue({
 
         // 热销商品需要用的数据:
         this.get_hot_goods();
+        this.get_category_data();
     },
     methods: {
            // 退出登录按钮
@@ -92,6 +92,19 @@ var vm = new Vue({
                 })
                 .catch(error => {
                     console.log(error);
+                })
+        },
+        get_category_data:function(){
+            var url = this.host + '/content_category/';
+            axios.get(url, {
+                responseType: 'json',
+                withCredentials:true,
+            })
+                .then(response => {
+                    this.content_category = response.data.content_category;
+                })
+                .catch(error => {
+                    console.log(error.response);
                 })
         },
         // 获取url路径参数
@@ -121,7 +134,6 @@ var vm = new Vue({
                     // 面包屑效果需要用的数据:
                     this.cat1.name = response.data.breadcrumb.cat1;
                     this.cat2.name = response.data.breadcrumb.cat2;
-                    this.cat3.name = response.data.breadcrumb.cat3;
                     for(var i=0; i<this.skus.length; i++){
                         this.skus[i].url = '/goods/' + this.skus[i].id + ".html";
                     }

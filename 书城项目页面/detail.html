@@ -57,10 +57,10 @@
 				<input type="submit" class="input_btn fr" name="" value="搜索">
 			</form>
 			<ul class="search_suggest fl">
-				<li><a href="#">索尼微单</a></li>
-				<li><a href="#">优惠15元</a></li>
-				<li><a href="#">美妆个护</a></li>
-				<li><a href="#">买2免1</a></li>
+				<li><a href="#">巴黎圣母院</a></li>
+				<li><a href="#">西游记</a></li>
+				<li><a href="#">高等数学</a></li>
+				<li><a href="#">学霸笔记</a></li>
 			</ul>
 		</div>
 
@@ -85,32 +85,28 @@
 				<div class="sub_menu_con fl">
 					<h1 class="fl">商品分类</h1>
 					<ul class="sub_menu">
-						{% for group in categories.values %}
-						<li>
+						<li v-for="(chanel,index) in content_category.chanels">
 							<div class="level1">
-								{% for channel in group.channels %}
-								<a href="{{ channel.url }}">{{ channel.name }}</a>
-								{% endfor %}
+									<a href="[[ chanel.url ]]">[[chanel.name]]</a>
 							</div>
 							<div class="level2">
-								{% for cat2 in group.sub_cats %}
-								<div class="list_group">
-									<div class="group_name fl">{{cat2.name}} &gt;</div>
+					
+								<div v-for="(cat2,index) in chanel.sub_cats"  class="list_group">
+	
+									<div class="group_name fl">[[ cat2.name ]]&gt;</div>
 									<div class="group_detail fl">
-										{% for cat3 in cat2.sub_cats %}
-										<a href="/list.html?cat={{cat3.id}}">{{cat3.name}}</a>
-										{% endfor %}
+										 <a href="list.html?cat=[[ cat2.id ]]">[[ cat2.name ]]</a>
 									</div>
+	
 								</div>
-								{% endfor %}
 							</div>
 						</li>
-						{% endfor %}
-					</ul>
+					
+				</ul>
 				</div>
 
 				<ul class="navlist fl">
-					<li><a href="">首页</a></li>
+					<li><a href="index.html">首页</a></li>
 					<li class="interval">|</li>
 					<li><a href="">真划算</a></li>
 					<li class="interval">|</li>
@@ -120,21 +116,21 @@
 		</div>
 
 <div class="breadcrumb">
-	<a href="#">{{ breadcrumb.cat1 }}</a>
+	<a href="#">[[ breadcrumb.cat1 ]]</a>
 	<span>></span>
-	<span>{{ breadcrumb.cat2 }}</span>
+	<span>[[ breadcrumb.cat2 ]]</span>
 	<span>></span>
-	<a href="#">{{ breadcrumb.cat3 }}</a>
+	<a href="#">[[ breadcrumb.cat3 ]]</a>
 </div>
 
 <div class="goods_detail_con clearfix">
-	<div class="goods_detail_pic fl"><img src="{{ sku.default_image.url }}"></div>
+	<div class="goods_detail_pic fl"><img src="[[ sku.default_image.url ]]"></div>
 	<div class="goods_detail_list fr">
-		<h3>{{ sku.name }}</h3>
-		<p>{{ sku.caption }}</p>
+		<h3>[[ sku.name ]]</h3>
+		<p>[[ sku.caption ]]</p>
 		<div class="prize_bar">
-			<span class="show_pirze">¥<em>{{ sku.price }}</em></span><span> 市场价￥{{sku.market_price}}</span>
-			<a href="javascript:;" class="goods_judge">{{ sku.comments }}人评价</a>
+			<span class="show_pirze">¥<em>[[ sku.price ]]</em></span><span> 市场价￥[[sku.market_price]]</span>
+			<a href="javascript:;" class="goods_judge">[[ sku.comments ]]人评价</a>
 		</div>
 		<div class="goods_num clearfix">
 			<div class="num_name fl">数 量：</div>
@@ -146,14 +142,14 @@
 		</div>
 		{% for spec in specs %}
 		<div class="type_select">
-			<label>{{ spec.name }}:</label>
+			<label>[[ spec.name ]]:</label>
 			{% for option in spec.spec_options %}
 			{% if option.sku_id == sku.id %}
-			<a href="javascript:;" class="select">{{ option.value }}</a>
+			<a href="javascript:;" class="select">[[ option.value ]]</a>
 			{% elif option.sku_id %}
-			<a href="/goods/{{option.sku_id}}.html">{{ option.value }}</a>
+			<a href="/goods/[[option.sku_id]].html">[[ option.value ]]</a>
 			{% else %}
-			<a href="javascript:;">{{ option.value }}</a>
+			<a href="javascript:;">[[ option.value ]]</a>
 			{% endif %}
 			{% endfor %}
 		</div>
@@ -177,13 +173,13 @@
 		<div @click="on_tab_content('detail')" class="tab_content" :class="tab_content.detail?'current':''">
 			<dl>
 				<dt>商品详情：</dt>
-				<dd>{{ sku.spu.desc_detail|safe }}</dd>
+				<dd>[[ sku.spu.desc_detail|safe ]]</dd>
 			</dl>
 		</div>
 		<div @click="on_tab_content('pack')" class="tab_content" :class="tab_content.pack?'current':''">
 			<dl>
 				<dt>规格与包装：</dt>
-				<dd>{{ sku.spu.desc_pack|safe }}</dd>
+				<dd>[[ sku.spu.desc_pack|safe ]]</dd>
 			</dl>
 		</div>
 		<div @click="on_tab_content('comment')" class="tab_content" :class="tab_content.comment?'current':''">
@@ -202,7 +198,7 @@
 		<div @click="on_tab_content('service')" class="tab_content" :class="tab_content.service?'current':''">
 			<dl>
 				<dt>售后服务：</dt>
-				<dd>{{ sku.spu.desc_service|safe }}</dd>
+				<dd>[[ sku.spu.desc_service|safe ]]</dd>
 			</dl>
 		</div>
 	</div>
@@ -223,8 +219,8 @@
 	</div>
 </div>
 	<script type="text/javascript">
-        var price = {{sku.price}};
-        var cat = {{ sku.category.id }};
+        var price = [[sku.price]];
+        var cat = [[ sku.category.id ]];
     </script>
     <script type="text/javascript" src="js/common.js"></script>
     <script type="text/javascript" src="js/detail.js"></script>
