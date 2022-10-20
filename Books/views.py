@@ -50,15 +50,15 @@ class IndexBooksView(APIView):
             books_f1 = books.filter(category__in=childs_f1)
             # books_f2 = books.filter(category__in=childs_f2)
             books_f3 = books.filter(category__in=childs_f3)
-            books_f1_1 = books_f1.filter(category__in=childs_f1.filter(parent=parents_f1.get(name='童书')))
-            books_f1_2 = books_f1.filter(category__in=childs_f1.filter(parent=parents_f1.get(name='人文社科')))
-            books_f1_3 = books_f1.filter(category__in=childs_f1.exclude(parent=parents_f1.get(name='童书')).exclude(parent=parents_f1.get(name='人文社科')))
+            books_f1_1 = books_f1.filter(category__in=childs_f1.filter(parent=parents_f1.get(name='童书')))[:10]
+            books_f1_2 = books_f1.filter(category__in=childs_f1.filter(parent=parents_f1.get(name='人文社科')))[:10]
+            books_f1_3 = books_f1.filter(category__in=childs_f1.exclude(parent=parents_f1.get(name='童书')).exclude(parent=parents_f1.get(name='人文社科')))[:10]
             books_f1_0 = books_f1.order_by('-sales')[:3]
             # books_f2_1 = 0
             # books_f2_2 = 0
             # books_f2_0 = books_f2.order_by('-sales')[:3]
-            books_f3_1 = books_f3.filter(category__in=childs_f3.filter(name='中小学用书'))
-            books_f3_2 = books_f3.filter(category__in=childs_f3.filter(name='大中专教材'))
+            books_f3_1 = books_f3.filter(category__in=childs_f3.filter(name='中小学用书'))[:10]
+            books_f3_2 = books_f3.filter(category__in=childs_f3.filter(name='大中专教材'))[:10]
             books_f3_0 = books_f3.order_by('-sales')[:3]
             goods_on_index={'1F':{'1':[],'2':[],'3':[],'0':[]},'2F':{'1':[],'2':[],'0':[]},'3F':{'1':[],'2':[],'0':[]}}
             goods_on_index['1F']['1']=self.books_to_json(books_f1_1)
@@ -82,6 +82,7 @@ class IndexBooksView(APIView):
                 'title':book.name,
                 'url':'http://bookmall.com:8080/books/'+str(book.id),
                 'image_url':'http://'+str(book.image1),
+                # 'text':book.profile,
             }
             books_list.append(book_dic)
         return books_list
