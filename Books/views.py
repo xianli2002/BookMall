@@ -57,7 +57,7 @@ class IndexBooksView(APIView):
             # books_f2_1 = 0
             # books_f2_2 = 0
             # books_f2_0 = books_f2.order_by('-sales')[:3]
-            books_f3_1 = books_f3.filter(category__in=childs_f3.filter(name='中小学教材'))
+            books_f3_1 = books_f3.filter(category__in=childs_f3.filter(name='中小学用书'))
             books_f3_2 = books_f3.filter(category__in=childs_f3.filter(name='大中专教材'))
             books_f3_0 = books_f3.order_by('-sales')[:3]
             goods_on_index={'1F':{'1':[],'2':[],'3':[],'0':[]},'2F':{'1':[],'2':[],'0':[]},'3F':{'1':[],'2':[],'0':[]}}
