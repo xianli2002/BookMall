@@ -1,5 +1,4 @@
 from unicodedata import category
-from django.shortcuts import render
 from .models import SKU,BooksCategory
 from rest_framework.views import APIView
 from django.http import JsonResponse
@@ -10,22 +9,22 @@ from rest_framework.response import Response
 class IndexCategoryView(APIView):
     def get(self,request):
         try:
-            categorys = BooksCategory.objects.filter(parent=None)
+            parents = BooksCategory.objects.filter(parent=None)
             chanels = []           
-            for category in categorys:
+            for parent in parents:
                 cat = {
-                    'name':category.name,
-                    'id':category.id,
-                    'url':'http://bookmall.com:8080/categorys/'+str(category.id),
+                    'name':parent.name,
+                    'id':parent.id,
+                    'url':'http://bookmall.com:8080/categorys/'+str(parent.id),
                 }
                 childs = BooksCategory.objects.exclude(parent=None)            
                 sub_cats = []
                 for child in childs:
-                    if child.parent == category:
+                    if child.parent == parent:
                         sub_cat = {
                             'name':child.name,
                             'id':child.id,
-                            'url':'http://bookmall.com:8080/categorys/'+str(category.id)+'/'+str(child.id),
+                            'url':'http://bookmall.com:8080/categorys/'+str(parent.id)+'/'+str(child.id),
                         }
                         sub_cats.append(sub_cat)
                 cat['sub_cats']=sub_cats
@@ -36,8 +35,73 @@ class IndexCategoryView(APIView):
 
 #   获取主页商品数据
 class IndexBooksView(APIView):
-    def get():
-        pass
+    def get(self,request):
+        try:  
+            categorys = BooksCategory.objects.all()
+            parents = categorys.filter(parent=None)
+            childs = categorys.exclude(parent=None)
+            parents_f1 = parents
+            # parents_f2 = parents.get(name='名著')
+            parents_f3 = parents.get(name='教育')
+            childs_f1 = childs
+            # childs_f2 = childs.filter(parent=parents_f2)
+            childs_f3 = childs.filter(parent=parents_f3)
+            books = SKU.objects.all()
+            books_f1 = books.filter(category__in=childs_f1)
+            # books_f2 = books.filter(category__in=childs_f2)
+            books_f3 = books.filter(category__in=childs_f3)
+            books_f1_1 = books_f1.filter(category__in=childs_f1.filter(parent=parents_f1.get(name='童书')))
+            books_f1_2 = books_f1.filter(category__in=childs_f1.filter(parent=parents_f1.get(name='人文社科')))
+            books_f1_3 = books_f1.filter(category__in=childs_f1.exclude(parent=parents_f1.get(name='童书')).exclude(parent=parents_f1.get(name='人文社科')))
+            books_f1_0 = books_f1.order_by('-sales')[:3]
+            # books_f2_1 = 0
+            # books_f2_2 = 0
+            # books_f2_0 = books_f2.order_by('-sales')[:3]
+            books_f3_1 = books_f3.filter(category__in=childs_f3.filter(name='中小学教材'))
+            books_f3_2 = books_f3.filter(category__in=childs_f3.filter(name='大中专教材'))
+            books_f3_0 = books_f3.order_by('-sales')[:3]
+            goods_on_index={'1F':{'1':[],'2':[],'3':[],'0':[]},'2F':{'1':[],'2':[],'0':[]},'3F':{'1':[],'2':[],'0':[]}}
+            goods_on_index['1F']['1']=self.books_to_json(books_f1_1)
+            goods_on_index['1F']['2']=self.books_to_json(books_f1_2)
+            goods_on_index['1F']['3']=self.books_to_json(books_f1_3)
+            goods_on_index['1F']['0']=self.books_to_json(books_f1_0)
+            # goods_on_index['2F']['1']=self.books_to_json(books_f2_1)
+            # goods_on_index['2F']['2']=self.books_to_json(books_f2_2)
+            # goods_on_index['2F']['0']=self.books_to_json(books_f2_0)
+            goods_on_index['3F']['1']=self.books_to_json(books_f3_1)
+            goods_on_index['3F']['2']=self.books_to_json(books_f3_2)
+            goods_on_index['3F']['0']=self.books_to_json(books_f3_0)
+            return Response({'code':0,'errmsg':'ok','goods_on_index':goods_on_index})
+        except Exception as e:
+            return Response({'code':400,'errmsg':'error'})
+    
+    def books_to_json(self,books):
+        books_list=[]
+        for book in books:
+            book_dic = {
+                'title':book.name,
+                'url':'http://bookmall.com:8080/books/'+str(book.id),
+                'image_url':'http://'+str(book.image1),
+            }
+            books_list.append(book_dic)
+        return books_list
+    
+    #   获取相应类别的书籍信息
+    def get_category_book(self,category):
+        try:
+            categorys = BooksCategory.objects.all()
+            books = SKU.objects.all()
+            categorys_need = categorys.filter(name=category)
+            if categorys_need.parent == None:
+                category_need_child = categorys.get(parent=categorys_need)
+                books_need = books.filter(category__in=category_need_child)
+            else:
+                books_need = books.filter(category__in=categorys_need)
+            return books_need
+        except Exception as e:
+            print('无相应类别书籍')
+            return None
+
 
 class ListView(APIView):
     def get(self,request,category):
