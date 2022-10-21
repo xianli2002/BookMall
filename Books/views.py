@@ -15,7 +15,7 @@ class IndexCategoryView(APIView):
                 cat = {
                     'name':parent.name,
                     'id':parent.id,
-                    'url':'http://bookmall.com:8080/categorys/'+str(parent.id),
+                    'url':'http://bookmall.com:8080/list.html?cat='+str(parent.id),
                 }
                 childs = BooksCategory.objects.exclude(parent=None)            
                 sub_cats = []
@@ -23,8 +23,8 @@ class IndexCategoryView(APIView):
                     if child.parent == parent:
                         sub_cat = {
                             'name':child.name,
-                            'id':child.id,
-                            'url':'http://bookmall.com:8080/categorys/'+str(parent.id)+'/'+str(child.id),
+                            'id':str(child.id),
+                            'url':'http://bookmall.com:8080/list.html?cat='+str(parent.id)+'&'+str(child.id),
                         }
                         sub_cats.append(sub_cat)
                 cat['sub_cats']=sub_cats
@@ -82,7 +82,7 @@ class IndexBooksView(APIView):
                 'title':book.name,
                 'url':'http://bookmall.com:8080/books/'+str(book.id),
                 'image_url':'http://'+str(book.image1),
-                # 'text':book.profile,
+                'text':book.price,
             }
             books_list.append(book_dic)
         return books_list
@@ -92,9 +92,9 @@ class IndexBooksView(APIView):
         try:
             categorys = BooksCategory.objects.all()
             books = SKU.objects.all()
-            categorys_need = categorys.filter(name=category)
+            categorys_need = categorys.get(name=category)
             if categorys_need.parent == None:
-                category_need_child = categorys.get(parent=categorys_need)
+                category_need_child = categorys.filter(parent=categorys_need)
                 books_need = books.filter(category__in=category_need_child)
             else:
                 books_need = books.filter(category__in=categorys_need)
@@ -109,7 +109,7 @@ class ListView(APIView):
         ordering = request.GET.get('ordering')
         page_size = request.GET.get('page_size')
         page = request.GET.get('page')
-        skus = SKU.objects.filter(category=category).order_by(ordering)
+        skus = self.get_category_book_id(category)
         paginator = Paginator(skus,per_page=page_size)
         page_skus = paginator.page(page)
         sku_list = []
@@ -118,10 +118,26 @@ class ListView(APIView):
                 'id':sku.id,
                 'name':sku.name,
                 'price':sku.price,
-                'image_url':sku.image1
+                'default_image_url':'http://'+str(sku.image1)
             })
+        print(sku_list)
         total_num = paginator.num_pages
         return Response({'code':0,'errmsg':'ok','list':sku_list,'count':total_num,'breadcrumb':''})
+    
+    def get_category_book_id(self,id):
+        try:
+            categorys = BooksCategory.objects.all()
+            books = SKU.objects.all()
+            categorys_need = categorys.get(id=id)
+            if categorys_need.parent == None:         
+                category_need_child = categorys.filter(parent=categorys_need)
+                books_need = books.filter(category__in=category_need_child)
+            else:
+                books_need = books.filter(category__in=categorys_need)
+            return books_need
+        except Exception as e:
+            print('无相应类别书籍')
+            return None
 
 #   商品详情页
 class DetailView(APIView):

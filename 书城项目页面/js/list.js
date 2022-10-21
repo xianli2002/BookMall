@@ -16,7 +16,8 @@ var vm = new Vue({
         cat2: {name:''},  // 二级类别
         cart_total_count: 0, // 购物车总数量
         carts: [], // 购物车数据
-        hot_skus:[] // 热销商品,
+        hot_skus:[], // 热销商品,
+        content_category:{}
     },
     computed: {
         total_page: function(){  // 总页数
@@ -68,7 +69,7 @@ var vm = new Vue({
     	this.username = getCookie('username');
 
         this.cat = this.get_query_string('cat');
-
+        this.get_category_data();
         // 获取列表页中展示需要用的数据:
         this.get_skus();
 
@@ -76,8 +77,7 @@ var vm = new Vue({
         this.get_cart();
 
         // 热销商品需要用的数据:
-        this.get_hot_goods();
-        this.get_category_data();
+        this.get_hot_goods(); 
     },
     methods: {
            // 退出登录按钮

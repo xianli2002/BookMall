@@ -73,7 +73,7 @@
                 <ul class="sub_menu">
                     <li v-for="(chanel,index) in content_category.chanels">
                         <div class="level1">
-                                <a href="[[ chanel.url ]]">[[chanel.name]]</a>
+                                <a :href=chanel.url>[[chanel.name]]</a>
                         </div>
                         <div class="level2">
                 
@@ -81,7 +81,7 @@
 
                                 <div class="group_name fl">[[ cat2.name ]]&gt;</div>
                                 <div class="group_detail fl">
-                                     <a href="list.html?cat=[[ cat2.id ]]">[[ cat2.name ]]</a>
+                                     <a :href=cat2.url>[[ cat2.name ]]</a>
                                 </div>
 
                             </div>
@@ -131,7 +131,7 @@
 
             <ul class="goods_type_list clearfix">
                 <li v-for="sku in skus">
-                    <a :href="sku.url"><img :src="sku.default_image_url"></a>
+                    <a :href="sku.url"><img :src=sku.default_image_url></a>
                     <h4><a :href="sku.url">[[sku.name]]</a></h4>
                     <div class="operate">
                         <span class="prize">￥[[sku.price]]</span>

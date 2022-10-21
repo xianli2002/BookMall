@@ -17,7 +17,7 @@
 			<div class="welcome fl">欢迎来到布克书城!</div>
 			<div class="fr">
 				<div v-if="username" class="login_btn fl">
-					欢迎您：<em>[[ username ]]</em>
+					欢迎您：<em>{{ username }}</em>
 					<a @click="logoutfunc" class="quit">退出</a>
 				</div>
 				<div v-else class="login_btn fl">
@@ -131,7 +131,7 @@ content_category:{
 
                                 <div class="group_name fl">{{ cat2.name }}&gt;</div>
                                 <div class="group_detail fl">
-                                     <a href="list.html?cat={{ cat2.id }}">{{ cat2.name }}</a>
+                                     <a :href=cat2.url>{{ cat2.name }}</a>
                                 </div>
 
                             </div>
@@ -249,7 +249,7 @@ goods_on_index:{
 
                 <img src="images/banner01.png">
                 <div class="channel">
-                    
+
                         <a href="#">热销好书</a>
 
                 </div>
