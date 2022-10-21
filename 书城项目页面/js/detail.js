@@ -19,6 +19,7 @@ var vm = new Vue({
         hots: [], // 热销商品
         cat: cat, // 商品类别
         comments: [], // 评论信息
+        content_category:{},
         score_classes: {
             1: 'stars_one',
             2: 'stars_two',
