@@ -109,7 +109,7 @@ class ListView(APIView):
         ordering = request.GET.get('ordering')
         page_size = request.GET.get('page_size')
         page = request.GET.get('page')
-        skus = self.get_category_book_id(category)
+        skus,cat1,cat2 = self.get_category_book_id(category)
         paginator = Paginator(skus,per_page=page_size)
         page_skus = paginator.page(page)
         sku_list = []
@@ -120,21 +120,23 @@ class ListView(APIView):
                 'price':sku.price,
                 'default_image_url':'http://'+str(sku.image1)
             })
-        print(sku_list)
         total_num = paginator.num_pages
-        return Response({'code':0,'errmsg':'ok','list':sku_list,'count':total_num,'breadcrumb':''})
+        if cat2 == '':
+            return Response({'code':0,'errmsg':'ok','list':sku_list,'count':total_num,'breadcrumb':{'cat1':{'name':cat1.name,'url':'http://bookmall.com:8080/list.html?cat='+str(cat1.id)},'cat2':{'name':'','url':'http://bookmall.com:8080/list.html?cat='+str(cat1.id)}}})
+        return Response({'code':0,'errmsg':'ok','list':sku_list,'count':total_num,'breadcrumb':{'cat1':{'name':cat1.name,'url':'http://bookmall.com:8080/list.html?cat='+str(cat1.id)},'cat2':{'name':cat2.name,'url':'http://bookmall.com:8080/list.html?cat='+str(cat1.id)+'&'+str(cat2.id)}}})
     
     def get_category_book_id(self,id):
         try:
             categorys = BooksCategory.objects.all()
             books = SKU.objects.all()
             categorys_need = categorys.get(id=id)
-            if categorys_need.parent == None:         
+            if categorys_need.parent == None:
                 category_need_child = categorys.filter(parent=categorys_need)
                 books_need = books.filter(category__in=category_need_child)
+                return books_need,categorys_need,''
             else:
-                books_need = books.filter(category__in=categorys_need)
-            return books_need
+                books_need = books.filter(category=categorys_need)
+                return books_need,categorys_need.parent,categorys_need
         except Exception as e:
             print('无相应类别书籍')
             return None

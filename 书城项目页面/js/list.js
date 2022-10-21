@@ -13,7 +13,7 @@ var vm = new Vue({
         count: 0,  // 总数量
         skus: [], // 数据
         cat1: {url: '',name:''},  // 一级类别
-        cat2: {name:''},  // 二级类别
+        cat2: {url: '',name:''},  // 二级类别
         cart_total_count: 0, // 购物车总数量
         carts: [], // 购物车数据
         hot_skus:[], // 热销商品,
@@ -109,10 +109,13 @@ var vm = new Vue({
         },
         // 获取url路径参数
         get_query_string: function(name){
-            var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+            // var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+            let reg=/.*cat=(.*?)(&|$)(.*?)$/;
             var r = window.location.search.substr(1).match(reg);
             if (r != null) {
-                return decodeURI(r[2]);
+                if(r[2] == '')
+                    return r[1];
+                return decodeURI(r[3]);
             }
             return null;
         },
@@ -132,8 +135,10 @@ var vm = new Vue({
                     this.count = response.data.count;
                     this.skus = response.data.list;
                     // 面包屑效果需要用的数据:
-                    this.cat1.name = response.data.breadcrumb.cat1;
-                    this.cat2.name = response.data.breadcrumb.cat2;
+                    this.cat1.name = response.data.breadcrumb.cat1.name;
+                    this.cat1.url = response.data.breadcrumb.cat1.url;
+                    this.cat2.name = response.data.breadcrumb.cat2.name;
+                    this.cat2.url = response.data.breadcrumb.cat2.url;
                     for(var i=0; i<this.skus.length; i++){
                         this.skus[i].url = '/goods/' + this.skus[i].id + ".html";
                     }
