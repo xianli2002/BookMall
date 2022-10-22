@@ -392,7 +392,10 @@ html,body{height:100%}
 	padding:0px 5px;
 	line-height:32px;
 }
-
+.index_top3_words{
+	width: 170px;
+	height: 83px;
+}
 .key_words{
 	background:#719ef7;
 	width:190px;
@@ -410,10 +413,10 @@ html,body{height:100%}
 
 .key_words a{
 	display:inline-block;
-	width:50px;
+	width:190px;
 	color:#fff;
-	font-size:12px;
-	line-height:28px;
+	font-size:8px;
+	line-height:20px;
 	margin:0px 5px;
 }
 .key_words a:hover{
