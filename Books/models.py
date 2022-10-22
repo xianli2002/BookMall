@@ -39,3 +39,11 @@ class SKUModelSerializer(ModelSerializer):
     class Meta:
         model=SKU
         fields='__all__'
+
+class  FamousBooks(models.Model):
+    book = models.ForeignKey(SKU,on_delete=models.PROTECT,verbose_name = '名著')
+
+    class Meta:
+        db_table = 'famousbooks'
+        verbose_name = '名著'
+        verbose_name_plural = verbose_name

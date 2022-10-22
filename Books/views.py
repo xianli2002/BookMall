@@ -1,5 +1,5 @@
 from unicodedata import category
-from .models import SKU,BooksCategory
+from .models import SKU,BooksCategory, FamousBooks
 from rest_framework.views import APIView
 from django.http import JsonResponse
 from django.core.paginator import Paginator
@@ -38,25 +38,27 @@ class IndexBooksView(APIView):
     def get(self,request):
         try:  
             categorys = BooksCategory.objects.all()
+            famous = FamousBooks.objects.all()
             parents = categorys.filter(parent=None)
             childs = categorys.exclude(parent=None)
             parents_f1 = parents
-            # parents_f2 = parents.get(name='名著')
+            parents_f2 = parents.get(name='文艺')
             parents_f3 = parents.get(name='教育')
             childs_f1 = childs
-            # childs_f2 = childs.filter(parent=parents_f2)
+            childs_f2 = childs.filter(parent=parents_f2)
             childs_f3 = childs.filter(parent=parents_f3)
             books = SKU.objects.all()
             books_f1 = books.filter(category__in=childs_f1)
-            # books_f2 = books.filter(category__in=childs_f2)
+            books_f2 = books.filter(category__in=childs_f2)
+            books_f2 = books_f2.filter(id__in=[value.book.id for value in famous])
             books_f3 = books.filter(category__in=childs_f3)
             books_f1_1 = books_f1.filter(category__in=childs_f1.filter(parent=parents_f1.get(name='童书')))[:10]
             books_f1_2 = books_f1.filter(category__in=childs_f1.filter(parent=parents_f1.get(name='人文社科')))[:10]
             books_f1_3 = books_f1.filter(category__in=childs_f1.exclude(parent=parents_f1.get(name='童书')).exclude(parent=parents_f1.get(name='人文社科')))[:10]
             books_f1_0 = books_f1.order_by('-sales')[:3]
-            # books_f2_1 = 0
-            # books_f2_2 = 0
-            # books_f2_0 = books_f2.order_by('-sales')[:3]
+            books_f2_1 = books_f2.filter(category__in=childs_f2.filter(name='文学'))[:10]
+            books_f2_2 = books_f2.filter(category__in=childs_f2.filter(name='小说'))[:10]
+            books_f2_0 = books_f2.order_by('-sales')[:3]
             books_f3_1 = books_f3.filter(category__in=childs_f3.filter(name='中小学用书'))[:10]
             books_f3_2 = books_f3.filter(category__in=childs_f3.filter(name='大中专教材'))[:10]
             books_f3_0 = books_f3.order_by('-sales')[:3]
@@ -65,9 +67,9 @@ class IndexBooksView(APIView):
             goods_on_index['1F']['2']=self.books_to_json(books_f1_2)
             goods_on_index['1F']['3']=self.books_to_json(books_f1_3)
             goods_on_index['1F']['0']=self.books_to_json(books_f1_0)
-            # goods_on_index['2F']['1']=self.books_to_json(books_f2_1)
-            # goods_on_index['2F']['2']=self.books_to_json(books_f2_2)
-            # goods_on_index['2F']['0']=self.books_to_json(books_f2_0)
+            goods_on_index['2F']['1']=self.books_to_json(books_f2_1)
+            goods_on_index['2F']['2']=self.books_to_json(books_f2_2)
+            goods_on_index['2F']['0']=self.books_to_json(books_f2_0)
             goods_on_index['3F']['1']=self.books_to_json(books_f3_1)
             goods_on_index['3F']['2']=self.books_to_json(books_f3_2)
             goods_on_index['3F']['0']=self.books_to_json(books_f3_0)
