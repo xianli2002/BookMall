@@ -82,7 +82,7 @@ class IndexBooksView(APIView):
         for book in books:
             book_dic = {
                 'title':book.name,
-                'url':'http://bookmall.com:8080/goods/'+str(book.id)+'.html',
+                'url':'http://bookmall.com:8080/detail.html?book='+str(book.id),
                 'image_url':'http://'+str(book.image1),
                 'text':book.price,
             }

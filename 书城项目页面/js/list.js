@@ -140,7 +140,7 @@ var vm = new Vue({
                     this.cat2.name = response.data.breadcrumb.cat2.name;
                     this.cat2.url = response.data.breadcrumb.cat2.url;
                     for(var i=0; i<this.skus.length; i++){
-                        this.skus[i].url = '/goods/' + this.skus[i].id + ".html";
+                        this.skus[i].url = '/detail.html?book=' + this.skus[i].id ;
                     }
                 })
                 .catch(error => {
@@ -194,7 +194,7 @@ var vm = new Vue({
                 .then(response => {
                      this.hot_skus = response.data.hot_skus
                      for(let i=0; i<this.hot_skus.length; i++){
-                        this.hot_skus[i].url = '/goods/' + this.skus[i].id + ".html";
+                        this.hot_skus[i].url = 'detail.html?book=' + this.skus[i].id;
                     }
                 })
                 .catch(error => {
