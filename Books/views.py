@@ -149,12 +149,12 @@ class DetailView(APIView):
         try:
             sku=SKU.objects.get(id=sku_id)
         except SKU.DoesNotExist:
-            return JsonResponse({"code":404,"errmag":"not exist"})
+            return Response({"code":404,"errmag":"not exist"})
         context = {
             'categories': '',
             'breadcrumb': '',
-            'sku': {                
-                'labels':sku.category,
+            'sku': {
+                'labels':sku.category.name,
                 'goodsname':sku.name,
                 'price':sku.price,
                 'image':sku.image1
