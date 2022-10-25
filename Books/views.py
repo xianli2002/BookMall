@@ -145,7 +145,9 @@ class ListView(APIView):
 
 #   商品详情页
 class DetailView(APIView):
-    def get(self,request,sku_id):
+    def get(self,request):
+        data = request.data
+        sku_id = data.sku_id
         try:
             sku=SKU.objects.get(id=sku_id)
         except SKU.DoesNotExist:
@@ -154,13 +156,15 @@ class DetailView(APIView):
             'categories': '',
             'breadcrumb': '',
             'sku': {
-                'labels':sku.category.name,
-                'goodsname':sku.name,
+                'name':sku.name,
                 'price':sku.price,
-                'image':sku.image1
+                'market_price':sku.price,
+                'commits':0,
+                'caption':sku.stock,
+                'default_image_url':sku.image1
                 },
             'specs': '',
         }
-        return Response({"code":0,"errmag":"ok","context":context})
+        return Response({"code":0,"errmag":"ok","good_detail":context['sku']})
 
 # Create your views here.
