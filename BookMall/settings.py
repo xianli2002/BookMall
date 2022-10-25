@@ -218,10 +218,10 @@ CSRF_TRUSTED_ORIGINS = ["http://bookmall.com:8080"]
 HAYSTACK_CONNECTIONS = {
     'default': {
 
-        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        # 'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        'ENGINE': 'haystack.backends.whoosh_cn_backend.WhooshEngine',
         # 索引文件的 存放路径，所有的 索引文件 都存放在 该目录下。生成索引文件时，自动 在目录(BASE_DIR)下 创建目录(whoosh_index)
         'PATH': (BASE_DIR/'whoosh_index'),
     }
 }
-HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
-HAYSTACK_SEARCH_RESULTS_PER_PAGE = 10
+HAYSTACK_SEARCH_RESULTS_PER_PAGE = 6

@@ -161,7 +161,8 @@ class DetailView(APIView):
                 'commits':0,
                 'caption':sku.stock,
                 'default_image_url':'http://'+str(sku.image1),
-                'category_id':str(sku.category.id)
+                'category_id':str(sku.category.id),
+                'profile':sku.profile,
                 },
             'specs': '',
         }
@@ -183,6 +184,7 @@ class BookSearchView(SearchView):
                 'page_size': context['page'].paginator.num_pages,
                 'count': context['page'].paginator.count
             })
+        print(skus)
 
         return JsonResponse(skus,safe=False)
 
