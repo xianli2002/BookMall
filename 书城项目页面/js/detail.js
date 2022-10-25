@@ -11,6 +11,7 @@ var vm = new Vue({
             comment: false,
             service: false
         },
+        sku:{},
         sku_id: '',
         sku_count: 1,
         sku_price: price,
@@ -18,7 +19,7 @@ var vm = new Vue({
         carts: [], // 购物车数据
         hots: [], // 热销商品
         cat: cat, // 商品类别
-        comments: [], // 评论信息
+        comment:[], // 评论信息
         content_category:{},
         score_classes: {
             1: 'stars_one',
@@ -37,14 +38,14 @@ var vm = new Vue({
         this.username=getCookie('username');
         this.get_sku_id();
 
-        axios.post(this.host+'/browse_histories/', {
+        axios.post(this.host+'/good_detail/', {
             sku_id: this.sku_id
         },{
                 responseType: 'json',
                 withCredentials:true,
             })
             .then(response=>{
-                console.log(response)
+                this.sku=response.good_detail
 
             })
             .catch(error=>{
@@ -96,7 +97,7 @@ var vm = new Vue({
         },
         // 从路径中提取sku_id
         get_sku_id: function(){
-            var re = /\d(?=.html)/;
+            var re = /.*book=(.*)/;
             this.sku_id = document.location.pathname.match(re)[0];
         },
         // 减小数值

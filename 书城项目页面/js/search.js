@@ -13,7 +13,8 @@ var vm = new Vue({
         query: '',  // 查询关键字
         cart_total_count: 0, // 购物车总数量
         cart: [], // 购物车数据
-        searchkey:''
+        searchkey:'',
+        category_data:{},
     },
     computed: {
         total_page: function(){  // 总页数
@@ -65,6 +66,7 @@ var vm = new Vue({
         this.query = this.get_query_string('q');
         this.get_search_result();
         this.get_cart();
+        this.get_category_data;
     },
     methods: {
         // 退出登录按钮
@@ -110,7 +112,7 @@ var vm = new Vue({
                     var results = response.data;
                     for(var i=0; i< results.length; i++){
                         var sku = results[i];
-                        sku.url = '/goods/' + sku.id + ".html";
+                        sku.url = "/goods/detail.html?book="+sku.id;
                         this.searchkey = sku.searchkey
                         this.skus.push(sku);
                         this.page_size = sku.page_size;
@@ -119,6 +121,19 @@ var vm = new Vue({
                 })
                 .catch(error => {
                     console.log(error);
+                })
+        },
+        get_category_data:function(){
+            var url = this.host + '/content_category/';
+            axios.get(url, {
+                responseType: 'json',
+                withCredentials:true,
+            })
+                .then(response => {
+                    this.content_category = response.data.content_category;
+                })
+                .catch(error => {
+                    console.log(error.response);
                 })
         },
         // 点击页数

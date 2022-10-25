@@ -122,12 +122,25 @@
 	<span>></span>
 	<a href="#">[[ breadcrumb.cat3 ]]</a>
 </div>
+<!-- 
 
+sku:{
+	default_image_url:""
+	name:""
+	price:int(现价)
+	market_price:int(原价)
+	comments:0(默认)
+	caption:int(库存)
+
+
+}
+
+ -->
 <div class="goods_detail_con clearfix">
-	<div class="goods_detail_pic fl"><img src="[[ sku.default_image.url ]]"></div>
+	<div class="goods_detail_pic fl"><img src="[[ sku.default_image_url ]]"></div>
 	<div class="goods_detail_list fr">
 		<h3>[[ sku.name ]]</h3>
-		<p>[[ sku.caption ]]</p>
+		<p>库存：[[ sku.caption ]]</p>
 		<div class="prize_bar">
 			<span class="show_pirze">¥<em>[[ sku.price ]]</em></span><span> 市场价￥[[sku.market_price]]</span>
 			<a href="javascript:;" class="goods_judge">[[ sku.comments ]]人评价</a>
@@ -140,7 +153,7 @@
 				<a @click="on_minus()" class="minus fr">-</a>
 			</div>
 		</div>
-		{% for spec in specs %}
+		<!-- {% for spec in specs %}
 		<div class="type_select">
 			<label>[[ spec.name ]]:</label>
 			{% for option in spec.spec_options %}
@@ -153,7 +166,7 @@
 			{% endif %}
 			{% endfor %}
 		</div>
-		{% endfor %}
+		{% endfor %} -->
 		<div class="total">总价：<em>[[sku_amount]]元</em></div>
 		<div class="operate_btn">
 			<a @click="add_cart" class="add_cart" id="add_cart">加入购物车</a>
@@ -161,48 +174,6 @@
 	</div>
 </div>
 
-<div class="main_wrap clearfix">
-	
-	<div class="r_wrap fr clearfix">
-		<ul class="detail_tab clearfix">
-			<li @click="on_tab_content('detail')" :class="tab_content.detail?'active':''">商品详情</li>
-			<li @click="on_tab_content('pack')" :class="tab_content.pack?'active':''">规格与包装</li>
-			<li @click="on_tab_content('comment')" :class="tab_content.comment?'active':''">商品评价([[comments.length]])</li>
-			<li @click="on_tab_content('service')" :class="tab_content.service?'active':''">售后服务</li>
-		</ul>
-		<div @click="on_tab_content('detail')" class="tab_content" :class="tab_content.detail?'current':''">
-			<dl>
-				<dt>商品详情：</dt>
-				<dd>[[ sku.spu.desc_detail|safe ]]</dd>
-			</dl>
-		</div>
-		<div @click="on_tab_content('pack')" class="tab_content" :class="tab_content.pack?'current':''">
-			<dl>
-				<dt>规格与包装：</dt>
-				<dd>[[ sku.spu.desc_pack|safe ]]</dd>
-			</dl>
-		</div>
-		<div @click="on_tab_content('comment')" class="tab_content" :class="tab_content.comment?'current':''">
-			<ul class="judge_list_con">
-				<li class="judge_list fl" v-for="comment in comments">
-					<div class="user_info fl">
-						<b>[[comment.username]]</b>
-					</div>
-					<div class="judge_info fl">
-						<div :class="comment.score_class"></div>
-						<div class="judge_detail">[[comment.comment]]</div>
-					</div>
-				</li>
-			</ul>
-		</div>
-		<div @click="on_tab_content('service')" class="tab_content" :class="tab_content.service?'current':''">
-			<dl>
-				<dt>售后服务：</dt>
-				<dd>[[ sku.spu.desc_service|safe ]]</dd>
-			</dl>
-		</div>
-	</div>
-</div>
 
 	<div class="footer">
 		<div class="foot_link">
