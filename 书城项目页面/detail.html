@@ -87,7 +87,7 @@
 					<ul class="sub_menu">
 						<li v-for="(chanel,index) in content_category.chanels">
 							<div class="level1">
-									<a href="[[ chanel.url ]]">[[chanel.name]]</a>
+									<a :href= chanel.url >[[chanel.name]]</a>
 							</div>
 							<div class="level2">
 					
@@ -137,7 +137,7 @@ sku:{
 
  -->
 <div class="goods_detail_con clearfix">
-	<div class="goods_detail_pic fl"><img src="[[ sku.default_image_url ]]"></div>
+	<div class="goods_detail_pic fl"><img :src=sku.default_image_url></div>
 	<div class="goods_detail_list fr">
 		<h3>[[ sku.name ]]</h3>
 		<p>库存：[[ sku.caption ]]</p>
