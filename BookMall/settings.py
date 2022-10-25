@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'Areas',
     'Books',
     'corsheaders',
-    'rest_framework'
+    'rest_framework',
+    'haystack',
 ]
 
 MIDDLEWARE = [
@@ -213,3 +214,13 @@ SESSION_CACHE_ALIAS = "session"
 AUTH_USER_MODEL = 'Users.User'
 
 CSRF_TRUSTED_ORIGINS = ["http://bookmall.com:8080"]
+#搜索引擎配置
+HAYSTACK_CONNECTIONS = {
+    'default': {
+
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        # 索引文件的 存放路径，所有的 索引文件 都存放在 该目录下。生成索引文件时，自动 在目录(BASE_DIR)下 创建目录(whoosh_index)
+        'PATH': (BASE_DIR/'whoosh_index'),
+    }
+}
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'

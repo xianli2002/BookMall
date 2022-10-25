@@ -1,0 +1,4 @@
+{{object.name}}
+{{object.author}}
+{{object.profile}}
+{{object.category.name}}
