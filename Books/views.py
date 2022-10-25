@@ -4,6 +4,7 @@ from rest_framework.views import APIView
 from django.http import JsonResponse
 from django.core.paginator import Paginator
 from rest_framework.response import Response
+from haystack.views import SearchView
 
 #   获取主页分类数据
 class IndexCategoryView(APIView):
@@ -114,9 +115,9 @@ class ListView(APIView):
         skus,cat1,cat2 = self.get_category_book_id(category)
         paginator = Paginator(skus,per_page=page_size)
         page_skus = paginator.page(page)
-        sku_list = []
+        skus = []
         for sku in page_skus.object_list:
-            sku_list.append({
+            skus.append({
                 'id':sku.id,
                 'name':sku.name,
                 'price':sku.price,
@@ -124,8 +125,8 @@ class ListView(APIView):
             })
         total_num = paginator.num_pages
         if cat2 == '':
-            return Response({'code':0,'errmsg':'ok','list':sku_list,'count':total_num,'breadcrumb':{'cat1':{'name':cat1.name,'url':'http://bookmall.com:8080/list.html?cat='+str(cat1.id)},'cat2':{'name':'','url':'http://bookmall.com:8080/list.html?cat='+str(cat1.id)}}})
-        return Response({'code':0,'errmsg':'ok','list':sku_list,'count':total_num,'breadcrumb':{'cat1':{'name':cat1.name,'url':'http://bookmall.com:8080/list.html?cat='+str(cat1.id)},'cat2':{'name':cat2.name,'url':'http://bookmall.com:8080/list.html?cat='+str(cat1.id)+'&'+str(cat2.id)}}})
+            return Response({'code':0,'errmsg':'ok','list':skus,'count':total_num,'breadcrumb':{'cat1':{'name':cat1.name,'url':'http://bookmall.com:8080/list.html?cat='+str(cat1.id)},'cat2':{'name':'','url':'http://bookmall.com:8080/list.html?cat='+str(cat1.id)}}})
+        return Response({'code':0,'errmsg':'ok','list':skus,'count':total_num,'breadcrumb':{'cat1':{'name':cat1.name,'url':'http://bookmall.com:8080/list.html?cat='+str(cat1.id)},'cat2':{'name':cat2.name,'url':'http://bookmall.com:8080/list.html?cat='+str(cat1.id)+'&'+str(cat2.id)}}})
     
     def get_category_book_id(self,id):
         try:
@@ -166,4 +167,22 @@ class DetailView(APIView):
         }
         return Response({"code":0,"errmag":"ok","good_detail":context['sku']})
 
-# Create your views here.
+# 商品搜索
+
+class BookSearchView(SearchView):
+    def create_response(self):
+        context = self.get_context()
+        skus=[]
+        for sku in context['page'].object_list:
+            skus.append({
+                'id':sku.object.id,
+                'name':sku.object.name,
+                'price': sku.object.price,
+                'default_image_url': "https://{}".format(sku.object.image1),
+                'searchkey': context.get('query'),
+                'page_size': context['page'].paginator.num_pages,
+                'count': context['page'].paginator.count
+            })
+
+        return JsonResponse(skus,safe=False)
+
