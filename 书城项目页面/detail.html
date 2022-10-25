@@ -95,7 +95,7 @@
 	
 									<div class="group_name fl">[[ cat2.name ]]&gt;</div>
 									<div class="group_detail fl">
-										 <a href="list.html?cat=[[ cat2.id ]]">[[ cat2.name ]]</a>
+										 <a :href=cat2.url>[[ cat2.name ]]</a>
 									</div>
 	
 								</div>
@@ -115,13 +115,13 @@
 			</div>
 		</div>
 
-<div class="breadcrumb">
+<!-- <div class="breadcrumb">
 	<a href="#">[[ breadcrumb.cat1 ]]</a>
 	<span>></span>
 	<span>[[ breadcrumb.cat2 ]]</span>
 	<span>></span>
 	<a href="#">[[ breadcrumb.cat3 ]]</a>
-</div>
+</div> -->
 <!-- 
 
 sku:{
@@ -143,7 +143,6 @@ sku:{
 		<p>库存：[[ sku.caption ]]</p>
 		<div class="prize_bar">
 			<span class="show_pirze">¥<em>[[ sku.price ]]</em></span><span> 市场价￥[[sku.market_price]]</span>
-			<a href="javascript:;" class="goods_judge">[[ sku.comments ]]人评价</a>
 		</div>
 		<div class="goods_num clearfix">
 			<div class="num_name fl">数 量：</div>

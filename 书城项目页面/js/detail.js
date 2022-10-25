@@ -3,7 +3,6 @@ var vm = new Vue({
     delimiters: ['[[', ']]'],
     data: {
         host,
-        price:0,
         username: '',
         token: sessionStorage.token || localStorage.token,
         tab_content: {
@@ -12,14 +11,15 @@ var vm = new Vue({
             comment: false,
             service: false
         },
+        price:0,
         sku:{},
         sku_id: '',
         sku_count: 1,
-        sku_price: price,
+        sku_price: '',
         cart_total_count: 0, // 购物车总数量
         carts: [], // 购物车数据
         hots: [], // 热销商品
-        cat: cat, // 商品类别
+        cat: '', // 商品类别
         comment:[], // 评论信息
         content_category:{},
         score_classes: {
@@ -42,7 +42,7 @@ var vm = new Vue({
         this.get_cart();
         this.get_hot_goods();
         this.get_comments();
-        this.detail_visit();
+        // this.detail_visit();
     },
     methods: {
          // 退出登录按钮
@@ -84,19 +84,17 @@ var vm = new Vue({
         },
         // 从路径中提取sku_id
         get_sku_id: function(){
-            var re = /.*book=(.*)/;
-            this.sku_id = document.location.pathname.match(re)[0];
-            axios.post(this.host+'/good_detail/', {
-                sku_id: this.sku_id
-            },{
+            var re = /.*book=(.*)$/;
+            // this.sku_id = document.location.pathname.match(re)[0];
+            this.sku_id = window.location.search.substr(1).match(re)[1];
+            axios.get(this.host+'/good_detail/'+this.sku_id, {
                     responseType: 'json',
                     withCredentials:true,
                 })
                 .then(response=>{
-                    this.sku=response.good_detail;
-                    this.price = [[sku.price]];
-                    this.cat = [[ sku.category.id ]];
-    
+                    this.sku=response.data.good_detail;
+                    this.sku_price = this.sku.price;
+                    this.cat = this.sku.category_id;
                 })
                 .catch(error=>{
                     console.log(error)
