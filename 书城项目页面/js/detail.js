@@ -3,6 +3,7 @@ var vm = new Vue({
     delimiters: ['[[', ']]'],
     data: {
         host,
+        price:0,
         username: '',
         token: sessionStorage.token || localStorage.token,
         tab_content: {
@@ -37,20 +38,6 @@ var vm = new Vue({
     mounted: function(){
         this.username=getCookie('username');
         this.get_sku_id();
-
-        axios.post(this.host+'/good_detail/', {
-            sku_id: this.sku_id
-        },{
-                responseType: 'json',
-                withCredentials:true,
-            })
-            .then(response=>{
-                this.sku=response.good_detail
-
-            })
-            .catch(error=>{
-                console.log(error)
-            })
         this.get_category_data();    
         this.get_cart();
         this.get_hot_goods();
@@ -99,6 +86,21 @@ var vm = new Vue({
         get_sku_id: function(){
             var re = /.*book=(.*)/;
             this.sku_id = document.location.pathname.match(re)[0];
+            axios.post(this.host+'/good_detail/', {
+                sku_id: this.sku_id
+            },{
+                    responseType: 'json',
+                    withCredentials:true,
+                })
+                .then(response=>{
+                    this.sku=response.good_detail;
+                    this.price = [[sku.price]];
+                    this.cat = [[ sku.category.id ]];
+    
+                })
+                .catch(error=>{
+                    console.log(error)
+                })
         },
         // 减小数值
         on_minus: function(){
