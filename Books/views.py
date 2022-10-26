@@ -105,11 +105,6 @@ class IndexBooksView(APIView):
             print('无相应类别书籍')
             return None
 
-#   获取浏览数据
-class HistoryView(APIView):
-    def get():
-        pass
-
 #   获取商品列表
 class ListView(APIView):
     def get(self,request,category):

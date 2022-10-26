@@ -7,5 +7,4 @@ urlpatterns = [
     path('good_detail/<sku_id>',views.DetailView.as_view()),
     path('content_category/',views.IndexCategoryView.as_view()),
     path('goods_on_index/',views.IndexBooksView.as_view()),
-    # path('browse_histories/',views.HistoryView.as_view()),
 ]
