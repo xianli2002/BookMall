@@ -9,7 +9,7 @@ var vm = new Vue({
         cat: '', // 当前商品类别
         page: 1, // 当前页数
         page_size: 5, // 每页数量
-        ordering: '-create_time', // 排序
+        ordering: 'id', // 排序
         count: 0,  // 总数量
         skus: [], // 数据
         cat1: {url: '',name:''},  // 一级类别

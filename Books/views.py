@@ -1,4 +1,3 @@
-from unicodedata import category
 from .models import SKU,BooksCategory, FamousBooks
 from rest_framework.views import APIView
 from django.http import JsonResponse
@@ -106,13 +105,19 @@ class IndexBooksView(APIView):
             print('无相应类别书籍')
             return None
 
+#   获取浏览数据
+class HistoryView(APIView):
+    def get():
+        pass
 
+#   获取商品列表
 class ListView(APIView):
     def get(self,request,category):
         ordering = request.GET.get('ordering')
         page_size = request.GET.get('page_size')
         page = request.GET.get('page')
         skus,cat1,cat2 = self.get_category_book_id(category)
+        skus = skus.order_by(ordering)
         paginator = Paginator(skus,per_page=page_size)
         page_skus = paginator.page(page)
         skus = []
@@ -168,8 +173,7 @@ class DetailView(APIView):
         }
         return Response({"code":0,"errmag":"ok","good_detail":context['sku']})
 
-# 商品搜索
-
+#   商品搜索
 class BookSearchView(SearchView):
     def create_response(self):
         context = self.get_context()
