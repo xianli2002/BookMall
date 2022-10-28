@@ -54,7 +54,7 @@ class registerNewAPI(APIView):
             return Response({'code':400,'errmsg':'Agreement not agreed'})
 
         #保存用户注册信息到数据库
-        user_save=User.objects.create_user(username=username,password=password,mobile=mobile)
+        user_save=User.objects.create_user(username=username,password=password,phonenumber=mobile)
 
         login(request,user_save)
 
