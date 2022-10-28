@@ -186,7 +186,6 @@ class BookSearchView(SearchView):
                 'page_size': context['page'].paginator.num_pages,
                 'count': context['page'].paginator.count
             })
-        print(skus)
 
         return JsonResponse(skus,safe=False)
 

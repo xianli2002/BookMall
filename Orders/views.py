@@ -15,7 +15,6 @@ class OrderSettlementAPIView(LoginRequiredJSONMixin,APIView):
         addresses=Address.objects.filter(is_deleted=False)
         addresses_list=[]
         for address in addresses:
-            print(address.receiver)
             addresses_list.append({
                 'id': address.id,
                 'province': address.province.name,
