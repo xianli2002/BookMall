@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'Users',
     'Areas',
     'Books',
+    'Orders',
     'corsheaders',
     'rest_framework',
     'haystack',

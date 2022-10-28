@@ -70,10 +70,10 @@
 							<tr>
 								<td width="55%">
 									<ul v-for="good in order.goods" class="order_goods_list clearfix">					
-										<li class="col01"><img :src=" good.image "></li>
-										<li class="col02">{{good.name}}<em>{{good.price}}元</em></li>	
-										<li class="col03">{{good.count}}</li>
-										<li class="col03">{{good.total_amount}}元</li>	
+										<li class="col01" :title="good.name"><a :href="good.url"><img :src="good.image"></a></li>
+										<li class="col01"><em>{{good.price}}元</em></li>	
+										<li class="col01">{{good.count}}</li>
+										<li class="col01">{{good.total_amount}}元</li>	
 									</ul>
 								</td>
 								<td width="15%">{{ order.total_amount }}元</td>

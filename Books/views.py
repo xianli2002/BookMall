@@ -181,7 +181,7 @@ class BookSearchView(SearchView):
                 'id':sku.object.id,
                 'name':sku.object.name,
                 'price': sku.object.price,
-                'default_image_url': "https://"+str(sku.image1),
+                'default_image_url': "http://"+str(sku.object.image1),
                 'searchkey': context.get('query'),
                 'page_size': context['page'].paginator.num_pages,
                 'count': context['page'].paginator.count
