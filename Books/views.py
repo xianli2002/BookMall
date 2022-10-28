@@ -65,17 +65,17 @@ class IndexBooksView(APIView):
             books_f3_1 = books_f3.filter(category__in=childs_f3.filter(name='中小学用书'))[:10]
             books_f3_2 = books_f3.filter(category__in=childs_f3.filter(name='大中专教材'))[:10]
             books_f3_0 = books_f3.order_by('-sales')[:3]
-            goods_on_index={'1F':{'1':[],'2':[],'3':[],'0':[]},'2F':{'1':[],'2':[],'0':[]},'3F':{'1':[],'2':[],'0':[]}}
-            goods_on_index['1F']['1']=self.books_to_json(books_f1_1)
-            goods_on_index['1F']['2']=self.books_to_json(books_f1_2)
-            goods_on_index['1F']['3']=self.books_to_json(books_f1_3)
-            goods_on_index['1F']['0']=self.books_to_json(books_f1_0)
-            goods_on_index['2F']['1']=self.books_to_json(books_f2_1)
-            goods_on_index['2F']['2']=self.books_to_json(books_f2_2)
-            goods_on_index['2F']['0']=self.books_to_json(books_f2_0)
-            goods_on_index['3F']['1']=self.books_to_json(books_f3_1)
-            goods_on_index['3F']['2']=self.books_to_json(books_f3_2)
-            goods_on_index['3F']['0']=self.books_to_json(books_f3_0)
+            goods_on_index={'A':{'a':[],'b':[],'c':[],'z':[]},'B':{'a':[],'b':[],'z':[]},'C':{'a':[],'b':[],'z':[]}}
+            goods_on_index['A']['a']=self.books_to_json(books_f1_1)
+            goods_on_index['A']['b']=self.books_to_json(books_f1_2)
+            goods_on_index['A']['c']=self.books_to_json(books_f1_3)
+            goods_on_index['A']['z']=self.books_to_json(books_f1_0)
+            goods_on_index['B']['a']=self.books_to_json(books_f2_1)
+            goods_on_index['B']['b']=self.books_to_json(books_f2_2)
+            goods_on_index['B']['z']=self.books_to_json(books_f2_0)
+            goods_on_index['C']['a']=self.books_to_json(books_f3_1)
+            goods_on_index['C']['b']=self.books_to_json(books_f3_2)
+            goods_on_index['C']['z']=self.books_to_json(books_f3_0)
             return Response({'code':0,'errmsg':'ok','goods_on_index':goods_on_index})
         except Exception as e:
             return Response({'code':400,'errmsg':'error'})

@@ -92,7 +92,7 @@ DATABASES = {
         'NAME': 'bookmall',
         'USER': 'root',
         'PASSWORD': 'lixian020506',
-        'HOST': '192.168.199.125',
+        'HOST': '127.0.0.1',
         'PORT': '3306',
     }
 }

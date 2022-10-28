@@ -7,6 +7,9 @@ var vm = new Vue({
         f3_tab: 1, // 3F 标签页控制
         cart_total_count: 0, // 购物车总数量
         carts: [], // 购物车数据,
+        A:{},
+        B:{},
+        C:{},
         username:'',
         content_category:{},
         goods_on_index:{},
@@ -43,6 +46,9 @@ var vm = new Vue({
             })
                 .then(response => {
                     this.goods_on_index = response.data.goods_on_index;
+                    this.A = response.data.goods_on_index.A;
+                    this.B = response.data.goods_on_index.B;
+                    this.C = response.data.goods_on_index.C;
                 })
                 .catch(error => {
                     console.log(error.response);
