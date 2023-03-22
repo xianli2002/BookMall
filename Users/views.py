@@ -6,7 +6,8 @@ from utils.views import LoginRequiredJSONMixin
 from .models import User,UserModelSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
-# from apps.goods.models import SKU
+from Books.models import SKU
+from django_redis import get_redis_connection
 
 #检查用户名是否已存在
 class usernameCountAPI(APIView):
@@ -53,7 +54,7 @@ class registerNewAPI(APIView):
             return Response({'code':400,'errmsg':'Agreement not agreed'})
 
         #保存用户注册信息到数据库
-        user_save=User.objects.create_user(username=username,password=password,mobile=mobile)
+        user_save=User.objects.create_user(username=username,password=password,phonenumber=mobile)
 
         login(request,user_save)
 
@@ -151,39 +152,38 @@ class passwordChangeAPI(APIView):
         return response
 
 
-# class UserHistoryView(LoginRequiredJSONMixin,APIView):
-#     #保存浏览记录
-#     def post(self,request):
-#         user=request.user
+class UserHistoryView(LoginRequiredJSONMixin,APIView):
+    #保存浏览记录
+    def post(self,request):
+        user=request.user
+        data=request.data
+        sku_id=data.get('sku_id')
+        try:
+            sku=SKU.objects.get(id=sku_id)
+        except SKU.DoesNotExist:
+            return Response({'code':400,'errmsg':'没有此商品'})
+        # 连接redis 
+        redis_cli=get_redis_connection('history')
+        # 去重
+        redis_cli.lrem('history_%s'%user.id,0,sku_id)
+        # 保存到redis中
+        redis_cli.lpush('history_%s'%user.id,sku_id)
+        # 只保存5条记录
+        redis_cli.ltrim("history_%s"%user.id,0,9)
+        return Response({'code':0,'errmsg':'ok'})
 
-#         data=request.data
-#         sku_id=data.get('sku_id')
-#         try:
-#             sku=SKU.objects.get(id=sku_id)
-#         except SKU.DoesNotExist:
-#             return Response({'code':400,'errmsg':'没有此商品'})
-#         # 连接redis 
-#         redis_cli=get_redis_connection('history')
-#         # 去重
-#         redis_cli.lrem('history_%s'%user.id,0,sku_id)
-#         # 保存到redsi中
-#         redis_cli.lpush('history_%s'%user.id,sku_id)
-#         # 只保存5条记录
-#         redis_cli.ltrim("history_%s"%user.id,0,9)
-#         return Response({'code':0,'errmsg':'ok'})
 
+    def get(self,request):
+        redis_cli=get_redis_connection('history')
 
-#     def get(self,request):
-#         redis_cli=get_redis_connection('history')
-
-#         ids=redis_cli.lrange('history_%s'%request.user.id,0,9)
-#         history_list=[]
-#         for sku_id in ids:
-#             sku=SKU.objects.get(id=sku_id)
-#             history_list.append({
-#                 'id':sku.id,
-#                 'name':sku.name,
-#                 'default_image_url': sku.default_image.url,
-#                 'price': sku.price
-#             })
-#         return Response({'code':0,'errmsg':'ok','skus':history_list})
+        ids=redis_cli.lrange('history_%s'%request.user.id,0,9)
+        history_list=[]
+        for sku_id in ids:
+            sku=SKU.objects.get(id=sku_id)
+            history_list.append({
+                'id':sku.id,
+                'name':sku.name,
+                'default_image_url': 'http://'+str(sku.image1),
+                'price': sku.price
+            })
+        return Response({'code':0,'errmsg':'ok','skus':history_list})

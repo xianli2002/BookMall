@@ -12,9 +12,9 @@ var vm = new Vue({
         skus: [], // 数据
         query: '',  // 查询关键字
         cart_total_count: 0, // 购物车总数量
-        cart: [], // 购物车数据
+        carts: [], // 购物车数据
         searchkey:'',
-        category_data:{},
+        content_category:{},
     },
     computed: {
         total_page: function(){  // 总页数
@@ -66,7 +66,7 @@ var vm = new Vue({
         this.query = this.get_query_string('q');
         this.get_search_result();
         this.get_cart();
-        this.get_category_data;
+        this.get_category_data();
     },
     methods: {
         // 退出登录按钮
@@ -112,7 +112,7 @@ var vm = new Vue({
                     var results = response.data;
                     for(var i=0; i< results.length; i++){
                         var sku = results[i];
-                        sku.url = "/goods/detail.html?book="+sku.id;
+                        sku.url = "/detail.html?book="+sku.id;
                         this.searchkey = sku.searchkey
                         this.skus.push(sku);
                         this.page_size = sku.page_size;

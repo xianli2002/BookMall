@@ -1,10 +1,12 @@
-from unicodedata import category
 from .models import SKU,BooksCategory, FamousBooks
 from rest_framework.views import APIView
 from django.http import JsonResponse
 from django.core.paginator import Paginator
 from rest_framework.response import Response
 from haystack.views import SearchView
+from django_redis import get_redis_connection
+import pickle
+import base64
 
 #   获取主页分类数据
 class IndexCategoryView(APIView):
@@ -63,17 +65,17 @@ class IndexBooksView(APIView):
             books_f3_1 = books_f3.filter(category__in=childs_f3.filter(name='中小学用书'))[:10]
             books_f3_2 = books_f3.filter(category__in=childs_f3.filter(name='大中专教材'))[:10]
             books_f3_0 = books_f3.order_by('-sales')[:3]
-            goods_on_index={'1F':{'1':[],'2':[],'3':[],'0':[]},'2F':{'1':[],'2':[],'0':[]},'3F':{'1':[],'2':[],'0':[]}}
-            goods_on_index['1F']['1']=self.books_to_json(books_f1_1)
-            goods_on_index['1F']['2']=self.books_to_json(books_f1_2)
-            goods_on_index['1F']['3']=self.books_to_json(books_f1_3)
-            goods_on_index['1F']['0']=self.books_to_json(books_f1_0)
-            goods_on_index['2F']['1']=self.books_to_json(books_f2_1)
-            goods_on_index['2F']['2']=self.books_to_json(books_f2_2)
-            goods_on_index['2F']['0']=self.books_to_json(books_f2_0)
-            goods_on_index['3F']['1']=self.books_to_json(books_f3_1)
-            goods_on_index['3F']['2']=self.books_to_json(books_f3_2)
-            goods_on_index['3F']['0']=self.books_to_json(books_f3_0)
+            goods_on_index={'A':{'a':[],'b':[],'c':[],'z':[]},'B':{'a':[],'b':[],'z':[]},'C':{'a':[],'b':[],'z':[]}}
+            goods_on_index['A']['a']=self.books_to_json(books_f1_1)
+            goods_on_index['A']['b']=self.books_to_json(books_f1_2)
+            goods_on_index['A']['c']=self.books_to_json(books_f1_3)
+            goods_on_index['A']['z']=self.books_to_json(books_f1_0)
+            goods_on_index['B']['a']=self.books_to_json(books_f2_1)
+            goods_on_index['B']['b']=self.books_to_json(books_f2_2)
+            goods_on_index['B']['z']=self.books_to_json(books_f2_0)
+            goods_on_index['C']['a']=self.books_to_json(books_f3_1)
+            goods_on_index['C']['b']=self.books_to_json(books_f3_2)
+            goods_on_index['C']['z']=self.books_to_json(books_f3_0)
             return Response({'code':0,'errmsg':'ok','goods_on_index':goods_on_index})
         except Exception as e:
             return Response({'code':400,'errmsg':'error'})
@@ -106,13 +108,14 @@ class IndexBooksView(APIView):
             print('无相应类别书籍')
             return None
 
-
+#   获取商品列表
 class ListView(APIView):
     def get(self,request,category):
         ordering = request.GET.get('ordering')
         page_size = request.GET.get('page_size')
         page = request.GET.get('page')
         skus,cat1,cat2 = self.get_category_book_id(category)
+        skus = skus.order_by(ordering)
         paginator = Paginator(skus,per_page=page_size)
         page_skus = paginator.page(page)
         skus = []
@@ -161,14 +164,14 @@ class DetailView(APIView):
                 'commits':0,
                 'caption':sku.stock,
                 'default_image_url':'http://'+str(sku.image1),
-                'category_id':str(sku.category.id)
+                'category_id':str(sku.category.id),
+                'profile':sku.profile,
                 },
             'specs': '',
         }
         return Response({"code":0,"errmag":"ok","good_detail":context['sku']})
 
-# 商品搜索
-
+#   商品搜索
 class BookSearchView(SearchView):
     def create_response(self):
         context = self.get_context()
@@ -178,7 +181,7 @@ class BookSearchView(SearchView):
                 'id':sku.object.id,
                 'name':sku.object.name,
                 'price': sku.object.price,
-                'default_image_url': "https://{}".format(sku.object.image1),
+                'default_image_url': "http://"+str(sku.object.image1),
                 'searchkey': context.get('query'),
                 'page_size': context['page'].paginator.num_pages,
                 'count': context['page'].paginator.count
@@ -186,3 +189,147 @@ class BookSearchView(SearchView):
 
         return JsonResponse(skus,safe=False)
 
+#   购物车
+class CartsView(APIView):
+    def post(self,request):
+        # 接收数据
+        data=request.data
+        sku_id=data.get('sku_id')
+        count=data.get('count')
+        # 验证数据
+        try:
+            sku=SKU.objects.get(id=sku_id)
+        except SKU.DoesNotExist:
+            return Response({'code':400,'errmsg':'查无此商品'})
+        try:
+            count=int(count)
+        except Exception:
+            count=1
+        # 判断用户的登录状态
+        user=request.user
+        if user.is_authenticated:    
+            redis_cli=get_redis_connection('carts')
+            redis_cli.hset('carts_%s'%user.id,sku_id,count)
+            redis_cli.sadd('selected_%s'%user.id,sku_id)
+            return Response({'code':0,'errmsg':'ok'})
+        else:
+            cookie_carts=request.COOKIES.get('carts')
+            if cookie_carts:
+                carts = pickle.loads(base64.b64decode(cookie_carts))
+            else:
+                carts={}
+            # 判断新增的商品 有没有在购物车里
+            if sku_id in carts:
+                origin_count=carts[sku_id]['count']
+                count+=origin_count
+            carts[sku_id]={
+                'count':count,
+                'selected':True
+            }
+            carts_bytes=pickle.dumps(carts)
+            base64encode=base64.b64encode(carts_bytes)
+            return Response({'code': 0, 'errmsg': 'ok'}).set_cookie('carts',base64encode.decode(),max_age=3600*24*12)
+
+    def get(self,request):
+        # 判断用户是否登录
+        user=request.user
+        if user.is_authenticated:
+            # 登录用户查询redis
+            redis_cli=get_redis_connection('carts')
+            sku_id_counts=redis_cli.hgetall('carts_%s'%user.id)
+            selected_ids=redis_cli.smembers('selected_%s'%user.id)
+            carts={}
+            for sku_id,count in sku_id_counts.items():
+                carts[int(sku_id)]={
+                    'count':int(count),
+                    'selected': sku_id in selected_ids
+                }
+        else:
+            # 未登录用户查询cookie
+            cookie_carts=request.COOKIES.get('carts')
+            if cookie_carts is not None:
+               carts = pickle.loads(base64.b64decode(cookie_carts))
+            else:
+                carts={}
+        sku_ids=carts.keys()
+        skus=SKU.objects.filter(id__in=sku_ids)
+        sku_list=[]
+        for sku in skus:
+            # 将对象数据转换为字典数据
+            sku_list.append({
+                'id':sku.id,
+                'price':sku.price,
+                'name':sku.name,
+                'default_image_url':'http://'+str(sku.image1),
+                'selected': carts[sku.id]['selected'],          
+                'count': int(carts[sku.id]['count']),                
+                'amount': sku.price*carts[sku.id]['count']     
+            })
+        # 6 返回响应
+        return Response({'code':0,'errmsg':'ok','cart_skus':sku_list})
+
+    def put(self,request):
+            user=request.user
+            # 2.接收数据
+            data=request.data
+            sku_id=data.get('sku_id')
+            count=data.get('count')
+            selected=data.get('selected')
+            # 3.验证数据
+            if not all([sku_id,count]):
+                return Response({'code':400,'errmsg':'参数不全'})
+            try:
+                SKU.objects.get(id=sku_id)
+            except SKU.DoesNotExist:
+                return Response({'code':400,'errmsg':'没有此商品'})
+            try:
+                count=int(count)
+            except Exception:
+                count=1
+            if user.is_authenticated:
+                redis_cli=get_redis_connection('carts')
+                redis_cli.hset('carts_%s'%user.id,sku_id,count)
+                if selected:
+                    redis_cli.sadd('selected_%s'%user.id,sku_id)
+                else:
+                    redis_cli.srem('selected_%s'%user.id,sku_id)
+       
+                return Response({'code':0,'errmsg':'ok','cart_sku':{'count':count,'selected':selected}})
+            else:
+                cookie_cart=request.COOKIES.get('carts')
+                if cookie_cart is not None:
+                    carts=pickle.loads(base64.b64decode(cookie_cart))
+                else:
+                    carts={}
+                if sku_id in carts:
+                    carts[sku_id]={
+                        'count':count,
+                        'selected':selected
+                    }
+                new_carts=base64.b64encode(pickle.dumps(carts))
+                return Response({'code':0,'errmsg':'ok','cart_sku':{'count':count,'selected':selected}}).set_cookie('carts',new_carts.decode(),max_age=14*24*3600)
+   
+    def delete(self,request):
+        data=request.data
+        sku_id=data.get('sku_id')
+        try:
+            SKU.objects.get(pk=sku_id)  # pk primary key
+        except SKU.DoesNotExist:
+            return Response({'code':400,'errmsg':'没有此商品'})
+        user=request.user
+        if user.is_authenticated:
+            redis_cli=get_redis_connection('carts')
+            redis_cli.hdel('carts_%s'%user.id,sku_id)
+            redis_cli.srem('selected_%s'%user.id,sku_id)
+            return Response({'code':0,'errmsg':'ok'})
+        else:
+            cookie_cart=request.COOKIES.get('carts')
+            #  判断数据是否存在
+            if cookie_cart is not None:
+                carts=pickle.loads(base64.b64decode(cookie_cart))
+            else:
+                carts={}
+            # 删除数据 
+            del carts[sku_id]
+            new_carts=base64.b64encode(pickle.dumps(carts))
+            return Response({'code':0,'errmsg':'ok'}).set_cookie('carts',new_carts.decode(),max_age=14*24*3600)

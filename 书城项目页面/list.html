@@ -124,7 +124,7 @@
 
         <div class="r_wrap fr clearfix">
             <div class="sort_bar">
-                <a @click="on_sort('-create_time')" :class="ordering=='-create_time'?'active':''">默认</a>
+                <a @click="on_sort('id')" :class="ordering=='id'?'active':''">默认</a>
                 <a @click="on_sort('price')" :class="ordering=='price'?'active':''">价格</a>
                 <a @click="on_sort('-sales')" :class="ordering=='-sales'?'active':''">人气</a>
             </div>

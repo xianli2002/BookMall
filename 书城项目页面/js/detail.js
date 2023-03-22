@@ -38,6 +38,20 @@ var vm = new Vue({
     mounted: function(){
         this.username=getCookie('username');
         this.get_sku_id();
+        axios.post(this.host+'/browse_histories/', {
+            sku_id: this.sku_id
+        },{
+                responseType: 'json',
+                withCredentials:true,
+            })
+            .then(response=>{
+                console.log(response)
+
+            })
+            .catch(error=>{
+                console.log(error)
+            })
+
         this.get_category_data();    
         this.get_cart();
         this.get_hot_goods();

@@ -94,7 +94,6 @@ class  AddressAPIView(LoginRequiredJSONMixin,APIView):
     def put(self,request,id):
         
         data = request.data
-        print(data)
         user = request.user
         receiver = data.get('receiver')
         province_id=data.get('province_id')
@@ -136,5 +135,4 @@ class TitleUpdateAPIView(APIView):
 
         address.title=title
         address.save()
-        print(str(address.title))
         return Response({"code":0,"errmsg":"ok"})
