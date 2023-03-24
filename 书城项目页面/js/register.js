@@ -114,9 +114,7 @@ var vm = new Vue({
             this.check_cpwd();
             this.check_phone();
             this.check_allow();
-
-
-            // 点击注册按钮之后, 发送请求 (下面的代码是通过请求体传参的)
+       +
             if (this.error_name == false && this.error_password == false && this.error_check_password == false
                 && this.error_phone == false && this.error_allow == false) {
                 axios.post(this.host + '/register/new/', {
